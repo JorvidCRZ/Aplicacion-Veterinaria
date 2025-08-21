@@ -1,0 +1,33 @@
+<div class="container py-5">
+    <div class="row">
+        <div class="col-12">
+            <div id="testimoniosCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item" *ngFor="let t of testimonios; let i = index"
+                        [ngClass]="{'active': i === 0}">
+                        <div class="carta card">
+                            <div class="card-body">
+                                <p class="card-text">{{ t.descripcion }}</p>
+                            </div>
+                            <div class="card-footer d-flex align-items-center justify-content-between">
+                                <div class="d-flex align-items-center">
+                                    <img [src]="t.imagen" class="rounded-circle me-3" style="width:50px;height:50px;"
+                                        [alt]="t.nombre">
+                                    <div>
+                                        <h6 class="mb-0">{{ t.nombre }}</h6>
+                                        <small>Dueño de "{{ t.mascota }}"</small>
+                                    </div>
+                                </div>
+                                <div>
+                                    <ng-container *ngFor="let s of [].constructor(t.estrellas)">
+                                        <i class="fas fa-star text-warning"></i>
+                                    </ng-container>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

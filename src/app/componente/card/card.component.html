@@ -1,0 +1,9 @@
+<div class="card h-100">
+  <img [src]="image" class="card-img-top img-fluid" [alt]="title">
+  <div class="card-body">
+    <h5 class="card-title">{{ title }}</h5>
+    <p class="card-text">{{ description }}</p>
+    <a *ngIf="link" [href]="link" class="btn">Ver más</a>
+  </div>
+</div>
+

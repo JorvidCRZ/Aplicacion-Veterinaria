@@ -22,7 +22,7 @@
             </div>
         </div>
     </section>
-
+    <app-card-gallery></app-card-gallery>
     <app-carrusel></app-carrusel>
 
     <section class="py-5 bg-light" id="conocer">
@@ -31,17 +31,32 @@
                 <div class="col-lg-6 text-center text-lg-start mb-4 mb-lg-0">
                     <h2>¡Conócenos!</h2>
                     <p>
-                        En Pets Secrets llevamos años de experiencia en el sector veterinario. Somos una clínica veterinaria referente gracias a
-                        nuestro amplio catálogo de servicios veterinarios para perros y gatos. En nuestra clínica veterinaria ofrecemos una atención
-                        cercana a todos nuestros clientes y sus mascotas. Todos nuestros veterinarios cuentan con la formación y experiencia para informar
-                        con total claridad acerca de su mascota. Trabajamos para garantizar un buen análisis clínico, diagnosticando correctamente
-                        a nuestros pacientes y finalmente, resolviendo cualquier tipo de dolencia. En Clínica Veterinaria Pets Secrets utilizamos la mejor
+                        En Pets Secrets llevamos años de experiencia en el sector veterinario. Somos una clínica
+                        veterinaria referente gracias a
+                        nuestro amplio catálogo de servicios veterinarios para perros y gatos. En nuestra clínica
+                        veterinaria ofrecemos una atención
+                        cercana a todos nuestros clientes y sus mascotas. Todos nuestros veterinarios cuentan con la
+                        formación y experiencia para informar
+                        con total claridad acerca de su mascota. Trabajamos para garantizar un buen análisis clínico,
+                        diagnosticando correctamente
+                        a nuestros pacientes y finalmente, resolviendo cualquier tipo de dolencia. En Clínica
+                        Veterinaria Pets Secrets utilizamos la mejor
                         maquinaria para trabajar en nuestro día a día.
                     </p>
+                    <button routerLink="/contacto" class="btn boton">Contáctanos</button>
                 </div>
                 <div class="col-lg-6 text-center">
-                    <img src="assets/general/gato.webp" alt="Conócenos - imagen mascota" class="img-fluid"loading="lazy">
+                    <img routerLink="/contacto" src="assets/general/gato.webp" alt="Conócenos - imagen mascota" class="img-fluid"
+                        loading="lazy">
                 </div>
             </div>
         </div>
     </section>
+
+    <section class="text-center py-5">
+        <h1>Comentarios</h1>
+        <h2 class="py-5">Opiniones de Nuestros Clientes</h2>
+        <app-comentarios></app-comentarios>
+    </section>
+
+</div>

@@ -1,0 +1,16 @@
+.boton {
+    height: 4rem;
+    font-weight: 700;
+    font-size: 23px;
+    width: 14rem;
+    margin: 0 auto;
+    background-color: var(--azul);
+    color: var(--blanco);
+
+    &:hover {
+        background-color: var(--celeste);
+        color: var(--blanco);
+        transition: all 0.3s ease-in-out;
+    }
+
+}

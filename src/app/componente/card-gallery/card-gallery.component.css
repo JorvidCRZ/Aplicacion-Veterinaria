@@ -1,0 +1,8 @@
+.container h2 {
+    font-weight: 600;
+    color: #333;
+}
+
+.row {
+    margin-top: 1rem;
+}

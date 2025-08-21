@@ -1,16 +1,45 @@
 h2,
 p {
-    color: var(--azul);
+  color: var(--azul);
+  margin-bottom: 1rem;
+}
+
+h1 {
+  background-color: var(--azul);
+  padding: 4rem 0;
+  font-size: 3rem;
+  font-weight: 800;
+  letter-spacing: 3px;
+  color: var(--blanco);
 }
 
 h2 {
-    font-size: 2rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
+  font-size: 2rem;
+  font-weight: 700;
 }
 
 p {
-    font-size: 1.5rem;
-    line-height: 1.5;
-    margin-bottom: 1rem;
+  font-size: 1.5rem;
+  line-height: 1.5;
+}
+
+.imagen-conocer img {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 1s ease-out, transform 1s ease-out;
+}
+
+.imagen-conocer img.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.img-fluid {
+  max-width: 80%;
+
+  &:hover {
+    cursor: pointer;
+    filter: drop-shadow(20px 20px 4px rgba(0, 0, 0, 0.5)) brightness(0.8);
+  }
+
 }

@@ -5,24 +5,28 @@ h1 {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
-.boton {
-    height: 4rem;
-    font-weight: 700;
-    width: 14rem;
-    margin: 0 auto;
-    background-color: var(--azul);
-    color: var(--blanco);
-
-    &:hover {
-        background-color: var(--blanco);
-        color: var(--azul);
-    }
-
+.slide-description {
+    white-space: pre-line;
 }
+
+.carousel-indicators [data-bs-target] {
+    height: 1.5rem;
+    width: 1.5rem;
+    margin: 1rem;
+    border-radius: 50%;
+    background-color: var(--azul);
+}
+
+.carousel-control-next-icon,
+.carousel-control-prev-icon {
+    width: 4rem;
+    height: 4rem;
+}
+
 @media screen and (width < 768px) {
-    img{
+    img {
         height: 30rem;
         object-fit: cover;
     }
-        
+
 }
