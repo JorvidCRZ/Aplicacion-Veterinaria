@@ -1,0 +1,28 @@
+h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    margin-bottom: 30px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.boton {
+    height: 4rem;
+    font-weight: 700;
+    width: 14rem;
+    margin: 0 auto;
+    background-color: var(--azul);
+    color: var(--blanco);
+
+    &:hover {
+        background-color: var(--blanco);
+        color: var(--azul);
+    }
+
+}
+@media screen and (width < 768px) {
+    img{
+        height: 30rem;
+        object-fit: cover;
+    }
+        
+}

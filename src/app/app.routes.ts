@@ -8,6 +8,7 @@ import { ContactoComponent } from './pages/contacto/contacto.component';
 import { LoginComponent } from './pages/login/login.component';
 import { CarritoComponent } from './pages/carrito/carrito.component';
 import { CheckoutComponent } from './pages/checkout/checkout.component';
+import { BannerComponent } from './componente/banner/banner.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'inicio', pathMatch: 'full' },
@@ -20,5 +21,6 @@ export const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'carrito', component: CarritoComponent },
     { path: 'contacto', component: ContactoComponent },
-    { path: 'checkout', component: CheckoutComponent }
+    { path: 'checkout', component: CheckoutComponent },
+    { path: 'banner', component: BannerComponent }
 ];

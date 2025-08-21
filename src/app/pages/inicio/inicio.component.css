@@ -1,0 +1,16 @@
+h2,
+p {
+    color: var(--azul);
+}
+
+h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+p {
+    font-size: 1.5rem;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+}
