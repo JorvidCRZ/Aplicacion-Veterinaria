@@ -1,0 +1,19 @@
+.card-estilo {
+    background: var(--azul);
+    color: var(--blanco);
+    border-radius: 25px;
+    .card-title {
+        font-weight: 700;
+    }
+    .card-text{
+        line-height: 34px;
+    } &:hover {
+        filter: brightness(0.95);
+    }
+}
+
+.card-imagen {
+    width: 80%;
+    height: 16rem;
+    border-radius: 15px; 
+}

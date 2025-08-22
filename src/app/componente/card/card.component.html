@@ -1,7 +1,7 @@
-<div class="card h-100">
-  <img [src]="image" class="card-img-top img-fluid" [alt]="title">
+<div class="card-estilo py-4 card h-100 text-center d-flex justify-content-center align-items-center">
+  <img [src]="image" class="card-imagen card-img-top img-fluid py-2" [alt]="title">
   <div class="card-body">
-    <h5 class="card-title">{{ title }}</h5>
+    <h4 class="card-title">{{ title }}</h4>
     <p class="card-text">{{ description }}</p>
     <a *ngIf="link" [href]="link" class="btn">Ver más</a>
   </div>

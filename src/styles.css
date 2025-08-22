@@ -1,11 +1,13 @@
-@import url('./style/boton.css');
-@import url('./style/icono.css');
-@import url('./style/scroll.css');
-@import url('./style/variables.css');
+@import url('style/boton.css');
+@import url('style/icono.css');
+@import url('style/tarjeta.css');
+@import url('style/scroll.css');
+@import url('style/variables.css');
 
 html{
     scroll-behavior: smooth;
     font-size: 16px;
+    background-color: var(--blanco);
 }
 
 body{

@@ -43,3 +43,14 @@ p {
   }
 
 }
+
+@media (max-width: 768px) {
+  #conocer p, #bienvenidos p{
+    font-size: 1rem;
+
+  }
+
+  #comentario  h1{
+    font-size: 2rem;
+  }
+}
