@@ -1,8 +1,9 @@
 <div class="container py-5">
-    <h2 class="text-center mb-4">Somos un equipo de expertos en...</h2>
+    <h2 class="text-center mb-4">{{ title }}</h2>
     <div class="row g-4">
-        <div class="col-12 col-md-6 col-lg-3" *ngFor="let s of servicios">
-            <app-card class="card-estilo" [title]="s.title" [description]="s.description" [image]="s.image" [link]="s.link">
+        <div class="col-12 col-md-6 col-lg-3" *ngFor="let card of items">
+            <app-card class="card-estilo" [title]="card.title" [description]="card.description" [image]="card.image"
+                [link]="card.link">
             </app-card>
         </div>
     </div>

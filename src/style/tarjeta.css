@@ -2,18 +2,41 @@
     background: var(--azul);
     color: var(--blanco);
     border-radius: 25px;
+
     .card-title {
         font-weight: 700;
     }
-    .card-text{
+
+    .card-imagen {
+        width: 80%;
+        height: 16rem;
+        border-radius: 15px;
+    }
+
+    .card-text {
         line-height: 34px;
-    } &:hover {
+        font-size: 1.2rem;
+    }
+
+    &:hover {
         filter: brightness(0.95);
     }
+
 }
 
-.card-imagen {
-    width: 80%;
-    height: 16rem;
-    border-radius: 15px; 
+.servicios .card-estilo {
+    .card-imagen {
+        border-radius: 50%;
+        border: 5px solid var(--blanco);
+        padding: 0 !important;
+        object-fit: fill;
+        width: 250px;
+        height: 250px;
+    }
+    @media screen and (max-width: 1024px) {
+        .card-imagen {
+            width: 150px;
+            height: 150px;
+        }
+    }
 }
