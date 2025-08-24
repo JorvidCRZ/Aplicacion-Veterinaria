@@ -16,3 +16,8 @@ body{
     box-sizing: border-box;
 }
 
+.contenido-seccion {
+    background: var(--gris);
+    border-radius: 30px;
+    padding: 20px;
+}
