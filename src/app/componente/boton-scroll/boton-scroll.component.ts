@@ -8,5 +8,7 @@ import { Component } from '@angular/core';
   styleUrl: './boton-scroll.component.css'
 })
 export class BotonScrollComponent {
-
+  scrollToTop() {
+    document.getElementById('enlaces-inicio')?.scrollIntoView({ behavior: 'smooth' });
+  }
 }

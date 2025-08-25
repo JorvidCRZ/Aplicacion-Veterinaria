@@ -54,7 +54,7 @@
                     <div class="contenido-seccion h-100 p-4 d-flex flex-column justify-content-between">
                         <h2 class="text-center">Nuestra Visión</h2>
                         <div>
-                            <p  class="m-0">
+                            <p class="m-0">
                                 Ser un referente en atención veterinaria compasiva y en educación responsable para los
                                 dueños de mascotas, fomentando una comunidad más consciente y respetuosa con los
                                 animales.
@@ -90,6 +90,39 @@
             </div>
         </div>
     </section>
+
+    <h2 class="titulo text-center my-4">Nuestras Sedes</h2>
+
+    <section *ngFor="let sede of sedes" class="contenedor-sede container my-4 p-0  rounded-5 shadow">
+        <div class="card border-0 rounded-5  overflow-hidden p-4">
+            <div class="row g-3 align-items-center p-3">
+
+                <!-- Columna izquierda -->
+                <div class="col-md-6 d-flex flex-column">
+                    <img [src]="sede.imagen" [alt]="sede.nombre" class="img-fluid rounded mb-3 shadow-sm"
+                        loading="lazy">
+
+                    <div class="px-2">
+                        <h3 class="fw-bold">{{ sede.nombre }}</h3>
+                        <p class="p-0"><strong>Dirección:</strong> {{ sede.direccion }}</p>
+                        <p class="p-0"><strong>Teléfono:</strong> {{ sede.telefono }}</p>
+                        <p class="p-0"><strong>Correo:</strong> {{ sede.correo }}</p>
+                    </div>
+                </div>
+
+                <!-- Columna derecha -->
+                <div class="col-md-6">
+                    <div class="ratio ratio-4x3">
+                        <iframe [src]="sede.mapa | safeUrl" class="rounded" style="border:0;" allowfullscreen
+                            loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+                </div>  
+
+            </div>
+        </div>
+    </section>
+
 
     <div class="contenido-seccion mt-5 p-4 nosotros">
         <app-card-gallery [items]="equipo" [title]="'Nuestro Equipo'"></app-card-gallery>
