@@ -1,0 +1,108 @@
+.filter-sidebar {
+    background: var(--blanco);
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    height: fit-content;
+}
+
+.filter-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--gris);
+}
+
+.filter-header h5 {
+    margin: 0;
+    font-weight: 600;
+    color: var(--negro);
+}
+
+.filter-section {
+    margin-bottom: 25px;
+}
+
+.filter-section:last-child {
+    margin-bottom: 0;
+}
+
+.form-label {
+    color: var(--gris-oscuro);
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.form-select {
+    border: 1px solid var(--gris);
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 14px;
+    background-color: var(--blanco);
+    transition: border-color 0.3s ease;
+}
+
+.form-select:focus {
+    border-color: var(--azul);
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.price-range {
+    position: relative;
+    margin-top: 10px;
+}
+
+.form-range {
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+.form-range::-webkit-slider-thumb {
+    background: var(--azul);
+    border: none;
+    border-radius: 50%;
+    height: 16px;
+    width: 16px;
+    cursor: pointer;
+}
+
+.form-range::-moz-range-thumb {
+    background: var(--azul);
+    border: none;
+    border-radius: 50%;
+    height: 16px;
+    width: 16px;
+    cursor: pointer;
+}
+
+.form-check {
+    padding-left: 1.5rem;
+}
+
+.form-check-input {
+    margin-left: -1.5rem;
+    margin-top: 0.125rem;
+}
+
+.form-check-input:checked {
+    background-color: var(--azul);
+    border-color: var(--azul);
+}
+
+.form-check-label {
+    font-size: 14px;
+    color: var(--gris-oscuro);
+    cursor: pointer;
+}
+
+.btn-link {
+    color: var(--azul);
+    font-size: 14px;
+    padding: 0;
+}
+
+.btn-link:hover {
+    color: var(--azul-claro);
+}

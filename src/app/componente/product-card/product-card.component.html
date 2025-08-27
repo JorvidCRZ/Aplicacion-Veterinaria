@@ -1,0 +1,20 @@
+<div class="product-card" (click)="viewProduct()">
+    <div class="product-image-container">
+        <img [src]="product.image" [alt]="product.name" class="product-image">
+        <span class="category-badge">{{product.category}}</span>
+    </div>
+
+    <div class="product-info">
+        <h6 class="product-name">{{product.name}}</h6>
+        <p class="product-price">S/{{product.price}}</p>
+        <p class="product-description">{{product.description}}</p>
+        <div class="stock-info">
+            <span class="stock-text">Stock: {{product.stock}}</span>
+        </div>
+        <button class="btn btn-primary add-to-cart-btn w-100" (click)="addToCart(); $event.stopPropagation()"
+            [disabled]="!product.inStock">
+            <i class="fas fa-shopping-cart me-2"></i>
+            {{product.inStock ? 'Agregar' : 'Sin Stock'}}
+        </button>
+    </div>
+</div>
