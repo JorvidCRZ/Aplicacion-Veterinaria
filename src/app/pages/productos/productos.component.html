@@ -1,1 +1,52 @@
-<p>productos works!</p>
+<div class="catalog-container">
+    <!-- Header Section -->
+    <div class="hero-section">
+        <div class="container">
+            <div class="hero-content text-center">
+                <h1 class="hero-title">Tienda Veterinaria</h1>
+                <p class="hero-subtitle">Encuentra todo lo que necesitas para el cuidado de tu mascota.</p>
+                <p class="hero-description">Productos de calidad con entrega a domicilio.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container contenedor-tienda">
+        <div class="products-header">
+            <span class="products-count">{{filteredProducts.length}} productos disponibles</span>
+        </div>
+
+        <div class="row">
+            <!-- Sidebar Filters -->
+            <div class="col-lg-3 col-md-4 mb-4">
+                <app-filtro (filtersChanged)="onFiltersChanged($event)"></app-filtro>
+            </div>
+            <!-- Products Grid -->
+            <div class="col-lg-9 col-md-8">
+                <div class="products-section">
+                    <!-- Loading State -->
+                    <div *ngIf="loading" class="text-center py-5">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Cargando...</span>
+                        </div>
+                        <p class="mt-2">Cargando productos...</p>
+                    </div>
+
+                    <!-- Products Grid -->
+                    <div *ngIf="!loading" class="row g-4">
+                        <div class="col-xl-4 col-lg-6 col-md-12" *ngFor="let product of filteredProducts">
+                            <app-product-card [product]="product"></app-product-card>
+                        </div>
+                    </div>
+
+                    <!-- No Products Found -->
+                    <div *ngIf="!loading && filteredProducts.length === 0" class="no-products text-center py-5">
+                        <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                        <h4>No se encontraron productos</h4>
+                        <p class="text-muted">Intenta ajustar los filtros para encontrar lo que buscas.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

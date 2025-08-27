@@ -1,0 +1,39 @@
+<div class="filter-sidebar">
+    <div class="filter-header">
+        <h5>Filtros</h5>
+        <button type="button" class="btn btn-link btn-sm text-decoration-none" (click)="clearFilters()">
+            Limpiar
+        </button>
+    </div>
+
+    <div class="filter-section">
+        <label class="form-label fw-semibold">Categoría</label>
+        <select class="form-select" [(ngModel)]="filters.category" (change)="onFilterChange()">
+            <option *ngFor="let category of categories" [value]="category.name">
+                {{category.name}}
+            </option>
+        </select>
+    </div>
+
+    <div class="filter-section">
+        <label class="form-label fw-semibold">Precio: S/{{filters.minPrice}} - S/{{filters.maxPrice}}</label>
+        <div class="price-range">
+            <input type="range" class="form-range price-min" min="0" max="400" [(ngModel)]="filters.minPrice"
+                (input)="onFilterChange()">
+            <input type="range" class="form-range price-max" min="0" max="400" [(ngModel)]="filters.maxPrice"
+                (input)="onFilterChange()">
+        </div>
+    </div>
+
+    <div class="filter-section">
+        <label class="form-label fw-semibold">Disponibilidad</label>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="inStock" [(ngModel)]="filters.inStock"
+                (change)="onFilterChange()">
+            <label class="form-check-label" for="inStock">
+                Solo productos en stock
+            </label>
+        </div>
+    </div>
+
+</div>
