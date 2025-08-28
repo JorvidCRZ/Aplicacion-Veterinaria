@@ -1,0 +1,54 @@
+/* Estilos heredados para la tarjeta de mascota */
+.text-especie{
+  color: var(--blanco)!important;
+  font-size: 2rem;
+  background-color:var(--azul);
+  border: none;
+}
+
+/* ICONO */
+.heart-icon {
+  color: #ff6b6b;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.heart-icon:hover {
+  transform: scale(1.1);
+  color: #fa2b2b;
+}
+
+/* TARJETAS */
+.card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1) !important;
+}
+
+.badge {
+  font-size: 0.80rem;
+}
+
+.btn-adoptar {
+  border-color: var(--azul) !important;
+  color: var(--blanco)!important;
+  background-color: var(--azul)!important;
+  transition: all 0.3s ease;
+}
+
+.btn-adoptar:hover {
+  background-color: var(--blanco) !important;
+  border-color: var(--azul)!important;
+  color: var(--azul) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
+  
+}
+.card-body {
+ 
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* opcional: sombra */
+}

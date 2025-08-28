@@ -1,0 +1,17 @@
+/* Estilos para el filtro  */
+.form-select:focus,
+.form-range:focus {
+  border-color: var(--azul);
+  box-shadow: 0 0 0 0.2rem rgba(78, 150, 237, 0.25);
+}
+
+/* Rango */
+.form-range::-webkit-slider-thumb {
+  background:var(--azul);
+}
+
+/* Check */
+.form-check-input:checked {
+  background-color:var(--azul);
+  border-color: var(--azul);
+}
