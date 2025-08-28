@@ -1,0 +1,158 @@
+h1{
+    color: var(--azul);
+    font-weight: 800;
+    font-size: 3rem;
+}
+
+.texto {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 0;
+}
+
+.texto p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: var(--negro);
+  font-weight: 500;
+}
+.bg-success, .bg-info , .bg-warning , .bg-primary{
+    background-color: var(--azul)!important;
+}
+
+.contenedor-adopcion {
+  /*background-color: var(--gris);*/
+  padding: 2rem;
+  border-radius: 40px;
+}
+.text-especie{
+  color: var(--negro)!important;
+  font-size: 2rem;
+  background-color:rgb(228, 230, 231);
+  border: none;
+}
+/*ICONO*/
+.heart-icon {
+  color: #ff6b6b;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.heart-icon:hover {
+  transform: scale(1.1);
+  color: #fa2b2b;
+}
+
+/*TARJETAS*/
+.card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1) !important;
+}
+/*RANGO*/
+.form-range::-webkit-slider-thumb {
+  background:var(--azul);
+}
+/*CHEK*/
+.form-check-input:checked {
+  background-color:var(--azul);
+  border-color: var(--azul);
+}
+.badge {
+  font-size: 0.80rem;
+}
+
+.btn-adoptar {
+  border-color: var(--azul) !important;
+  color: var(--azul)!important;
+  background-color: transparent !important;
+  transition: all 0.3s ease;
+}
+
+.btn-adoptar:hover {
+  background-color: var(--azul) !important;
+  border-color: var(--azul)!important;
+  color: var(--blanco) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
+}
+/* Estilos para el filtro */
+.form-select:focus,
+.form-range:focus {
+  border-color: var(--azul);
+  box-shadow: 0 0 0 0.2rem rgba(78, 150, 237, 0.25);
+}
+
+/* Estilos para el modal de adopción */
+.modal-dialog {
+  max-width: 650px;
+}
+
+.modal-content {
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+}
+
+.modal-header {
+  padding-bottom: 0;
+}
+
+.modal-body {
+  padding-top: 0.5rem;
+}
+
+/* Overlay del modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050;
+}
+
+.modal-container {
+  background: white;
+  border-radius: 12px;
+  max-width: 650px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.modal-header-custom {
+  padding: 1.5rem 1.5rem 0.5rem 1.5rem;
+  border-bottom: none;
+}
+
+.modal-body-custom {
+  padding: 0.5rem 1.5rem 1.5rem 1.5rem;
+}
+
+.btn-close-custom {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-close-custom:hover {
+  background-color: #f8f9fa;
+  border-radius: 50%;
+}
+ 

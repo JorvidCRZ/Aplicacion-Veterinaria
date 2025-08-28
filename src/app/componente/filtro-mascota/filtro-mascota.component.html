@@ -1,0 +1,133 @@
+<div class="card p-3 shadow-sm">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h5 class="card-title mb-0">Filtros</h5>
+    <button
+      class="btn btn-link p-0 text-decoration-none"
+      (click)="limpiarFiltros()"
+    >
+      Limpiar
+    </button>
+  </div>
+
+  <form>
+    <div class="mb-3">
+      <label for="especie" class="form-label">Especie</label>
+      <select
+        class="form-select"
+        id="especie"
+        [(ngModel)]="filtros.especie"
+        name="especie"
+        (change)="onFiltroChange()"
+      >
+        <option value="Todas las especies">Todas las especies</option>
+        <option value="Perro">Perro</option>
+        <option value="Gato">Gato</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label for="tamano" class="form-label">Tamaño</label>
+      <select
+        class="form-select"
+        id="tamano"
+        [(ngModel)]="filtros.tamano"
+        name="tamano"
+        (change)="onFiltroChange()"
+      >
+        <option value="Todos los tamaños">Todos los tamaños</option>
+        <option value="Pequeño">Pequeño</option>
+        <option value="Mediano">Mediano</option>
+        <option value="Grande">Grande</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label for="genero" class="form-label">Género</label>
+      <select
+        class="form-select"
+        id="genero"
+        [(ngModel)]="filtros.genero"
+        name="genero"
+        (change)="onFiltroChange()"
+      >
+        <option value="Todos los géneros">Todos los géneros</option>
+        <option value="Macho">Macho</option>
+        <option value="Hembra">Hembra</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label for="edad" class="form-label">
+        Edad (años):
+        <span id="edad-valor">0 - {{ filtros.edadMaxima }}</span>
+      </label>
+      <input
+        type="range"
+        class="form-range"
+        id="edad"
+        min="0"
+        max="10"
+        [(ngModel)]="filtros.edadMaxima"
+        name="edad"
+        (input)="onEdadChange($event)"
+      />
+    </div>
+
+    <div class="mb-3">
+      <h6 class="mt-4">Características especiales</h6>
+      <div class="form-check">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          [(ngModel)]="filtros.vacunado"
+          name="vacunado"
+          id="vacunado"
+          (change)="onCheckboxChange()"
+        />
+        <label class="form-check-label" for="vacunado">
+          Vacunado
+        </label>
+      </div>
+      <div class="form-check">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          [(ngModel)]="filtros.esterilizado"
+          name="esterilizado"
+          id="esterilizado"
+          (change)="onCheckboxChange()"
+        />
+        <label class="form-check-label" for="esterilizado">
+          Esterilizado
+        </label>
+      </div>
+      <div class="form-check">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          [(ngModel)]="filtros.buenoConNinos"
+          name="buenoConNinos"
+          id="bueno-ninos"
+          (change)="onCheckboxChange()"
+        />
+        <label class="form-check-label" for="bueno-ninos">
+          Bueno con niños
+        </label>
+      </div>
+      <div class="form-check">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          [(ngModel)]="filtros.buenoConOtrasMascotas"
+          name="buenoConOtrasMascotas"
+          id="bueno-otras-mascotas"
+          (change)="onCheckboxChange()"
+        />
+        <label class="form-check-label" for="bueno-otras-mascotas">
+          Bueno con otras mascotas
+        </label>
+      </div>
+    </div>
+  </form>
+</div>
+
