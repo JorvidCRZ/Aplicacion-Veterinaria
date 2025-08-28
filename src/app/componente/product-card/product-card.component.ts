@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Product } from '../../core/models/product';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -12,15 +12,16 @@ import { CommonModule } from '@angular/common';
 })
 export class ProductCardComponent {
   @Input() product!: Product;
+  @Output() add = new EventEmitter<Product>();
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) { }
 
   viewProduct(): void {
     this.router.navigate(['/detalle-producto', this.product.id]);
   }
 
-  addToCart(): void {
-    // Lógica para agregar al carrito
-    console.log('Producto agregado al carrito:', this.product);
+  addToCart() {
+    this.add.emit(this.product);
+    this.router.navigate(['/detalle-producto', this.product.id]);
   }
 }
