@@ -155,4 +155,30 @@ h1{
   background-color: #f8f9fa;
   border-radius: 50%;
 }
- 
+ /* Para tablets (768px - 991px) */
+@media (min-width: 768px) and (max-width: 991px) {
+  .contenedor-adopcion {
+    padding: 1.5rem;
+  }
+  
+  /* Ajustar el tamaño de las tarjetas en tablet */
+  .card {
+    margin-bottom: 1rem;
+  }
+  
+  /* Hacer el filtro más compacto en tablet */
+  .col-md-4 {
+    margin-bottom: 2rem;
+  }
+}
+
+/* Para pantallas pequeñas (menos de 768px) */
+@media (max-width: 767px) {
+  .contenedor-adopcion {
+    padding: 1rem;
+  }
+  
+  h1 {
+    font-size: 2rem;
+  }
+}

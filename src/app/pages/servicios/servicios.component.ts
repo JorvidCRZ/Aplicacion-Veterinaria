@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { Card } from '../../core/models/card';
 import { CardGalleryComponent } from '../../componente/card-gallery/card-gallery.component';
 
 @Component({
   selector: 'app-servicios',
   standalone: true,
-  imports: [CardGalleryComponent],
+  imports: [CardGalleryComponent,RouterModule],
   templateUrl: './servicios.component.html',
   styleUrl: './servicios.component.css'
 })
