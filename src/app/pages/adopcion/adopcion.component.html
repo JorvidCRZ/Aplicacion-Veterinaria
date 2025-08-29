@@ -18,20 +18,20 @@
   <!-- Contenido principal -->
   <div *ngIf="!loading">
     <div class="row">
-      <div class="col-md-3">
+      <div class="col-lg-3 col-md-4">
         <app-filtro-mascota
           (filtrosCambiados)="onFiltrosCambiados($event)"
           (limpiarFiltrosEvent)="onLimpiarFiltros()"
         ></app-filtro-mascota>
       </div>
 
-      <div class="col-md-9">
+      <div class="col-lg-9 col-md-8">
         <h6 class="mb-4">
           <span class="text-secondary">{{ mascotasFiltradas.length }}</span>
           mascotas disponibles
         </h6>
 
-        <div class="row row-cols-1 row-cols-md-3 g-3">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-3">
           <div class="col" *ngFor="let mascota of mascotasFiltradas">
             <app-mascota-card
               [mascota]="mascota"
