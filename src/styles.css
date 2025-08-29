@@ -16,7 +16,7 @@ body{
     box-sizing: border-box;
 }
 
-.contenido-seccion {
+.contenido-seccion, .contenido-contacto, .contenido-formulario, .contenido-general{
     background: var(--gris);
     border-radius: 30px;
     padding: 20px;

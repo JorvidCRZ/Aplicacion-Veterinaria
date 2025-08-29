@@ -1,0 +1,43 @@
+<section class="padded d-flex justify-center">
+    <div class="container">
+        <table class="tabla">
+            <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Descripción</th>
+                    <th>Precio</th>
+                    <th>Cantidad</th>
+                    <th>Subtotal</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of carrito; let i = index">
+                    <td>{{ item.idproducto }}</td>
+                    <td>{{ item.nombre }}</td>
+                    <td>S/ {{ item.precio | number:'1.2-2' }}</td>
+                    <td>
+                        <!-- aca lo que se tienque  corregir es el que se pueda poner punto  -->
+                        <input type="number" [(ngModel)]="item.cantidad" (change)="actualizarCantidad()" step="1"   min="1">
+                    </td>
+                    <td>S/ {{ (item.precio * item.cantidad) | number:'1.2-2' }}</td>
+                    <td>
+                        <button class="boton" (click)="eliminarItem(i)">Eliminar</button>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th colspan="4">Total</th>
+                    <th id="total">S/ {{ total | number:'1.2-2' }}</th>
+                    <th></th>
+                </tr>
+            </tfoot>
+        </table>
+
+        <div class="acciones mt-5 d-flex justify-space-between ">
+            <button class="boton" (click)="pagar()">Pagar</button>
+            <button class="boton" (click)="vaciarCarrito()">Vaciar carrito</button>
+        </div>
+    </div>
+</section>

@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
+
 export interface ProductoCarrito {
   idproducto: number;
   nombre: string;
   precio: number;
   cantidad: number;
 }
+
 @Injectable({
   providedIn: 'root'
 })
@@ -36,5 +38,13 @@ export class CarritoService {
 
   vaciarCarrito(): void {
     sessionStorage.removeItem(this.storageKey);
+  }
+
+
+
+  bloquearDecimales(event: KeyboardEvent) {
+    if (event.key === '.' || event.key === ',') {
+      event.preventDefault();
+    }
   }
 }
