@@ -30,7 +30,6 @@ export class CarritoComponent implements OnInit {
 
   actualizarCantidad(): void {
     this.carritoService.guardarCarrito(this.carrito);
-    this.carritoService.guardarCarrito(this.carrito);
   }
 
   eliminarItem(index: number): void {
@@ -43,14 +42,16 @@ export class CarritoComponent implements OnInit {
     this.carritoService.vaciarCarrito();
   }
 
-
+  puedePagar(): boolean {
+    if (!this.carrito.length) return false;
+    return this.carrito.every(item => item.cantidad > 0);
+  }
 
   pagar() {
+    this.logueado = localStorage.getItem('logueado') === 'true';
     if (this.logueado) {
-      // Aquí tu lógica de pago
-      alert('Redirigiendo al proceso de pago...');
+      this.router.navigate(['/checkout']);
     } else {
-      // Si no está logueado, lo mando al login
       this.router.navigate(['/login']);
     }
   }

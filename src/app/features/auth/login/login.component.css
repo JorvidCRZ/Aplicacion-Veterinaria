@@ -12,7 +12,7 @@
 
      &:hover {
          transform: translateY(-4px) scale(1.001);
-         box-shadow: 0 16px 40px 0  var(--azul-oscuro);
+         box-shadow: 0 16px 40px 0 var(--azul-oscuro);
      }
  }
 
@@ -20,6 +20,7 @@
      border-color: var(--verde);
      box-shadow: 0 0 0 0.2rem rgba(99, 102, 241, 0.15);
  }
+
  .form-control-lg {
      font-size: 1rem;
  }
@@ -36,8 +37,8 @@
  .fw-bold {
      font-weight: 700 !important;
  }
- 
- .boton{
-    height: 3rem;
-    font-size: 1rem;
+
+ .boton {
+     height: 3rem;
+     font-size: 1rem;
  }

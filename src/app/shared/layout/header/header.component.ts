@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MenuItem } from '../../../core/models/menu-item';
+import { Usuario } from '../../../core/models/usuario';
 
 @Component({
   selector: 'app-header',
@@ -23,7 +24,8 @@ export class HeaderComponent {
 
 
   logueado: boolean = false;
-  nombreUsuario: string | null = null;
+  usuarios: Usuario[] = [];
+  usuarioActivo: Usuario | null = null;
 
   ngOnInit() {
     this.checkLogin();
@@ -32,21 +34,20 @@ export class HeaderComponent {
   checkLogin() {
     const log = localStorage.getItem('logueado');
     this.logueado = log === 'true';
-    if (this.logueado) {
-      const userStr = localStorage.getItem('usuario');
-      if (userStr) {
-        const user = JSON.parse(userStr);
-        this.nombreUsuario = user.nombre;
-      }
-    } else {
-      this.nombreUsuario = null;
-    }
+
+    const usersStr = localStorage.getItem('usuarios');
+    this.usuarios = usersStr ? JSON.parse(usersStr) as Usuario[] : [];
+
+    const userActivoStr = localStorage.getItem('usuarioActivo');
+    this.usuarioActivo = userActivoStr ? JSON.parse(userActivoStr) as Usuario : null;
   }
 
   cerrarSesion() {
-    localStorage.removeItem('logueado');
-    localStorage.removeItem('usuario');
-    this.checkLogin();
-    window.location.href = '/usuario';
+    localStorage.setItem('logueado', 'false');
+    localStorage.removeItem('usuarioActivo');
+    this.usuarioActivo = null;
+    this.logueado = false;
+    window.location.href = '/login';
   }
 }
+

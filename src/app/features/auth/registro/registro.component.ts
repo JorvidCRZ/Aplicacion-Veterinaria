@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { Usuario } from '../../../core/models/usuario';
 
 @Component({
   selector: 'app-registro',
@@ -24,25 +25,25 @@ export class RegistroComponent {
   showPassword = false;
   showConfirm = false;
 
-  // fuerza de contraseña
   passwordStrengthMsg = '';
   passwordStrengthClass = '';
+
+
 
   constructor(private router: Router) { }
 
   onSubmit(event: Event) {
     event.preventDefault();
 
-    // Validación básica
+    // --- Validaciones ---
     if (!this.nombre.trim() || !this.email.trim() || !this.telefono.trim() || !this.password.trim() || !this.confirmPassword.trim()) {
       this.error = 'Por favor, completa todos los campos.';
       this.success = false;
       return;
     }
 
-    // Validar teléfono
     if (!this.isPhoneValid(this.telefono)) {
-      this.error = 'El número de celular no es válido (8 a 15 dígitos).';
+      this.error = 'El número de celular no es válido (debe tener 9 dígitos).';
       this.success = false;
       return;
     }
@@ -61,15 +62,33 @@ export class RegistroComponent {
 
     this.error = '';
 
-    // Guardar usuario en localStorage
-    const user = {
+    // --- Recuperar usuarios guardados ---
+    let usuarios: Usuario[] = JSON.parse(localStorage.getItem('usuarios') || '[]');
+
+    // Verificar si ya existe el correo
+    if (usuarios.some(u => u.email === this.email)) {
+      this.error = 'Este correo ya está registrado.';
+      this.success = false;
+      return;
+    }
+
+    const numeroid = usuarios.length > 0 ? Math.max(...usuarios.map(u => u.id)) + 1 : 1;
+    // Crear nuevo usuario
+    const user: Usuario = {
+      id: numeroid,
       nombre: this.nombre,
       email: this.email,
       telefono: this.telefono,
       password: this.password
     };
-    localStorage.setItem('usuario', JSON.stringify(user));
-    localStorage.removeItem('logueado');
+
+
+
+
+    // Guardar en la lista
+    usuarios.push(user);
+    localStorage.setItem('usuarios', JSON.stringify(usuarios));
+    localStorage.removeItem('logueado'); // evitar que quede logueado directo
 
     this.success = true;
 
@@ -78,7 +97,7 @@ export class RegistroComponent {
     }, 1200);
   }
 
-  // chequeo fuerza de contraseña
+  // --- chequeo fuerza de contraseña ---
   checkPasswordStrength(password: string) {
     if (!password) {
       this.passwordStrengthMsg = '';
@@ -98,9 +117,9 @@ export class RegistroComponent {
     }
   }
 
-  // --- validador de teléfono ---
+  // --- validador de teléfono (9 dígitos exactos para Perú) ---
   isPhoneValid(phone: string): boolean {
-    const regex = /^[0-9]{8,15}$/; // Solo números, de 8 a 15 dígitos
+    const regex = /^[0-9]{9}$/;
     return regex.test(phone);
   }
 }

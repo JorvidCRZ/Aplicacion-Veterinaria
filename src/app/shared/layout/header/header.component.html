@@ -21,8 +21,7 @@
                 <a routerLink="/login" title="Mi cuenta"><i class="icono fa fa-user fa-lg"></i></a>
             </ng-container>
             <ng-container *ngIf="logueado">
-                <a routerLink="/usuario" class="me-2" title="Perfil"><i class="icono fa fa-user-circle fa-lg"></i>
-                    {{nombreUsuario }}</a>
+                <a routerLink="/usuario" class="me-2" title="Perfil"><i class="icono fa fa-user-circle fa-lg"></i>{{ usuarioActivo?.nombre }}</a>
                 <button class="btn btn-outline-danger btn-sm ms-2" (click)="cerrarSesion()">Cerrar sesión</button>
             </ng-container>
         </div>
@@ -57,8 +56,7 @@
                         <a routerLink="/login" title="Mi cuenta"><i class="iconos fa fa-user fa-lg"></i></a>
                     </ng-container>
                     <ng-container *ngIf="logueado">
-                        <a routerLink="/perfil" title="Perfil"><i class="iconos fa fa-user-circle fa-lg"></i> {{
-                            nombreUsuario }}</a>
+                        <a routerLink="/perfil" title="Perfil"><i class="iconos fa fa-user-circle fa-lg"></i> {{ usuarioActivo?.nombre }}</a>
                         <button class="btn btn-outline-danger btn-sm ms-2" (click)="cerrarSesion()">Cerrar
                             sesión</button>
                     </ng-container>

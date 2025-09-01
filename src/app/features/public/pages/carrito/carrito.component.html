@@ -36,7 +36,7 @@
         </table>
 
         <div class="acciones mt-5 d-flex justify-space-between ">
-            <button class="boton" (click)="pagar()">Pagar</button>
+            <button class="boton" (click)="pagar()" [disabled]="!puedePagar()">Pagar</button>
             <button class="boton" (click)="vaciarCarrito()">Vaciar carrito</button>
         </div>
     </div>
