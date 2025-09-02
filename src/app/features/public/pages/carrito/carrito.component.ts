@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { CarritoService, ProductoCarrito } from '../../../../core/services/carrito.service';
+import { AuthService } from '../../../../core/services/auth.service';
 
 @Component({
   selector: 'app-carrito',
@@ -16,12 +17,15 @@ export class CarritoComponent implements OnInit {
   productos: ProductoCarrito[] = [];
   logueado: boolean = false;
 
-  constructor(private carritoService: CarritoService, private router: Router) { }
+  constructor(
+    private carritoService: CarritoService, 
+    private router: Router,
+    private authService: AuthService
+  ) { }
 
   ngOnInit(): void {
     this.carrito = this.carritoService.getCarrito();
-    // Aquí podrías verificar si está logueado desde un AuthService
-    // this.logueado = this.authService.estaLogueado();
+    this.logueado = this.authService.isLoggedIn();
   }
 
   get total(): number {
@@ -48,11 +52,9 @@ export class CarritoComponent implements OnInit {
   }
 
   pagar() {
-    this.logueado = localStorage.getItem('logueado') === 'true';
-    if (this.logueado) {
+    if (this.authService.requireAuth('/checkout')) {
       this.router.navigate(['/checkout']);
-    } else {
-      this.router.navigate(['/login']);
     }
+    // Si no está autenticado, requireAuth ya lo redirige al login
   }
 }

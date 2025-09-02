@@ -26,7 +26,7 @@
                             placeholder="Ej: 5512345678" [(ngModel)]="telefono" name="telefono" required
                             [ngClass]="{'is-valid': isPhoneValid(telefono), 'is-invalid': telefono && !isPhoneValid(telefono)}">
                         <div *ngIf="telefono && !isPhoneValid(telefono)" class="invalid-feedback">
-                            Ingresa un número de celular válido (8 a 15 dígitos).
+                            Ingresa un número de celular válido (9 dígitos).
                         </div>
                     </div>
 
@@ -35,7 +35,16 @@
                     <div class="mb-3">
                         <label for="email" class="form-label">Correo electrónico</label>
                         <input type="email" class="form-control form-control-lg" id="email"
-                            placeholder="Ingresa tu correo" [(ngModel)]="email" name="email" required>
+                            placeholder="Ingresa tu correo" [(ngModel)]="email" name="email" required
+                            (blur)="validateEmail()"
+                            (input)="validateEmail()"
+                            [ngClass]="{'is-valid': emailTouched && isEmailValid, 'is-invalid': emailTouched && !isEmailValid}">
+                        <div *ngIf="emailTouched && !isEmailValid" class="invalid-feedback">
+                            Ingresa un correo electrónico válido (ejemplo: usuario&#64;dominio.com)
+                        </div>
+                        <div *ngIf="emailTouched && isEmailValid" class="valid-feedback">
+                            Correo electrónico válido
+                        </div>
                     </div>
 
                     <!-- Password -->
@@ -44,7 +53,8 @@
                         <div class="input-group">
                             <input [type]="showPassword ? 'text' : 'password'" class="form-control form-control-lg"
                                 id="password" placeholder="Crea una contraseña" [(ngModel)]="password" name="password"
-                                required>
+                                required (blur)="validatePassword()" (input)="validatePassword()"
+                                [ngClass]="{'is-valid': passwordTouched && isPasswordValid, 'is-invalid': passwordTouched && !isPasswordValid}">
                             <button type="button" class="btn btn-outline-secondary"
                                 (click)="showPassword = !showPassword">
                                 <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
@@ -52,6 +62,13 @@
                         </div>
                         <!-- Indicador fuerza -->
                         <small class="d-block mt-1" [ngClass]="passwordStrengthClass">{{ passwordStrengthMsg }}</small>
+                        <!-- Mensaje de validación -->
+                        <div *ngIf="passwordTouched && !isPasswordValid" class="invalid-feedback d-block">
+                            La contraseña debe tener al menos 6 caracteres
+                        </div>
+                        <div *ngIf="passwordTouched && isPasswordValid" class="valid-feedback d-block">
+                            Contraseña válida
+                        </div>
                     </div>
 
                     <!-- Confirmación contraseña -->
@@ -60,14 +77,21 @@
                         <div class="input-group">
                             <input [type]="showConfirm ? 'text' : 'password'" class="form-control form-control-lg"
                                 id="confirmPassword" placeholder="Repite tu contraseña" [(ngModel)]="confirmPassword"
-                                name="confirmPassword" required>
+                                name="confirmPassword" required (blur)="validateConfirmPassword()" (input)="validateConfirmPassword()"
+                                [ngClass]="{'is-valid': confirmPasswordTouched && isConfirmPasswordValid, 'is-invalid': confirmPasswordTouched && !isConfirmPasswordValid}">
                             <button type="button" class="btn btn-outline-secondary"
                                 (click)="showConfirm = !showConfirm">
                                 <i class="bi" [ngClass]="showConfirm ? 'bi-eye-slash' : 'bi-eye'"></i>
                             </button>
                         </div>
-                        <small *ngIf="password && confirmPassword && password !== confirmPassword"
-                            class="text-danger">Las contraseñas no coinciden</small>
+                        <!-- Mensajes de validación -->
+                        <div *ngIf="confirmPasswordTouched && !isConfirmPasswordValid" class="invalid-feedback d-block">
+                            <span *ngIf="confirmPassword.length === 0">Confirma tu contraseña</span>
+                            <span *ngIf="confirmPassword.length > 0 && password !== confirmPassword">Las contraseñas no coinciden</span>
+                        </div>
+                        <div *ngIf="confirmPasswordTouched && isConfirmPasswordValid" class="valid-feedback d-block">
+                            Contraseñas coinciden
+                        </div>
                     </div>
 
                     <!-- Checkbox términos -->
