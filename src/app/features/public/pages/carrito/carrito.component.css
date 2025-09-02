@@ -1,47 +1,150 @@
+/* ===== Colchón respecto a navbar/footer/FAB (móvil y desktop) ===== */
+:root{
+  --navbar-h: 64px;     /* ajusta a tu header real */
+  --footer-gap: 24px;
+  --fab-gap: 80px;      /* para que el FAB no tape botones */
+}
+
+/* Aplica el colchón a la sección actual */
+.page-safe {
+  padding-top: 80px;   /* distancia al navbar fijo */
+  padding-bottom: 120px; /* distancia al footer/FAB */
+}
+
+/* ===== Centrado en desktop ===== */
+.carrito-wrapper{
+  max-width: 900px;          /* ancho agradable en desktop */
+  margin: 0 auto;            /* centrado */
+}
+
+/* ===== Tabla base (desktop) ===== */
 .tabla {
-    border-collapse: collapse;
-    width: 100%;
-    margin-bottom: 20px;
-    background: var(--blanco);
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 20px;
+  background: var(--blanco);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0,0,0,.1);
 }
+.tabla thead{ background: var(--azul); color: var(--blanco); }
+.tabla td,.tabla th{ padding:12px; border-bottom:1px solid var(--gris); text-align:center; }
+.tabla tbody tr:hover{ background: var(--gris-claro); }
+tfoot{ font-weight:bold; background: var(--gris); }
 
-.tabla thead {
-    background-color: var(--azul);
-    color: var(--blanco);
+input[type="number"]{
+  border:1px solid var(--gris-oscuro);
+  border-radius:5px;
+  padding:6px 12px; width:70px; text-align:center;
 }
+input:focus{ border-color:var(--azul); box-shadow:0 0 0 .2rem rgba(53,107,255,.25); }
 
-.tabla td,
-.tabla th {
-    padding: 12px;
-    border-bottom: solid 1px var(--gris);
-    text-align: center;
-}
+.acciones{ text-align:right; }
 
-.tabla tbody tr:hover {
-    background-color: var(--gris-claro);
-}
+/* Cabecera azul consistente */
+.cart-table thead th{ background:#164a88; color:#fff; border-color:#164a88; }
 
-tfoot {
-    font-weight: bold;
-    background-color: var(--gris);
-}
+/* ===== Móvil: tabla -> tarjetas centradas y con aire ===== */
+@media (max-width: 576px){
+  :root{
+    --navbar-h: 60px;
+    --fab-gap: 96px;
+  }
 
-input[type="number"] {
-    border: solid 1px var(--gris-oscuro);
-    border-radius: 5px;
-    padding: 6px 12px;
-    width: 70px;
-    text-align: center;
-}
+  .carrito-container{ padding-left:12px; padding-right:12px; }
 
-input:focus {
-    border-color: var(--azul);
-    box-shadow: 0 0 0 0.2rem rgba(53, 107, 255, 0.25);
-}
+  .cart-table,
+  .cart-table thead,
+  .cart-table tbody,
+  .cart-table tfoot,
+  .cart-table th,
+  .cart-table td,
+  .cart-table tr{
+    display:block; width:100%;
+  }
 
+  /* Ocultamos cabecera y usamos data-label */
+  .cart-table thead{
+    position:absolute; height:0; width:0; overflow:hidden;
+    clip:rect(0 0 0 0); white-space:nowrap;
+  }
+
+  /* Tarjetas: centradas y separadas del navbar/footer */
+  .cart-table tbody tr{
+    margin: 0 auto 12px auto;     /* separación entre tarjetas */
+    border:1px solid #e8e8e8;
+    border-radius:12px;
+    box-shadow:0 2px 8px rgba(0,0,0,.04);
+    padding:10px 12px;
+    background:#fff;
+    max-width: 520px;             /* centrado + aire lateral */
+  }
+
+  /* Etiqueta (izq) + valor (der) compacto */
+  .cart-table td{
+    display:grid;
+    grid-template-columns: 92px 1fr;
+    gap:6px;
+    padding:6px 4px;
+    border:0 !important;
+    align-items:center;
+  }
+  .cart-table td::before{
+    content: attr(data-label);
+    font-weight:600;
+    color: var(--azul);
+  }
+  .cart-table td[data-label="Descripción"]{ line-height:1.2; }
+
+  /* Cantidad centrada con ancho cómodo */
+  .cart-table td[data-label="Cantidad"]{ justify-items:center; }
+  .cart-table td[data-label="Cantidad"] input[type="number"]{
+    width:120px; text-align:center;
+  }
+
+  /* Subtotal marcado a la derecha */
+  .cart-table td[data-label="Subtotal"]{
+    justify-items:end; font-weight:600;
+  }
+
+  /* Acciones: solo botón centrado */
+  .cart-table td[data-label="Acciones"]{
+    display:flex; justify-content:center; align-items:center; padding-top:10px;
+  }
+  .cart-table td[data-label="Acciones"]::before{ display:none; }
+
+  /* Total como tarjeta breve y centrada */
+  .cart-table tfoot tr{
+    display:grid;
+    grid-template-columns: 1fr auto;
+    padding:8px 12px;
+    border:1px solid #e8e8e8;
+    border-radius:12px;
+    background:#f7f9fc;
+    margin: 8px auto 0 auto;
+    width:100%;
+    max-width:520px;
+  }
+  .cart-table tfoot td{
+    display:block; border:0 !important; padding:6px 0;
+  }
+  .cart-table tfoot td:last-child{ text-align:right; white-space:nowrap; }
+
+  /* Botones: mismo ancho que tarjetas y despegar del FAB/footer */
 .acciones {
-    text-align: right;
+  margin-top: 24px;
+  margin-bottom: 40px; /* extra aire antes del footer */
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.acciones .btn {
+  flex: 1 1 200px;
+  max-width: 250px;
+}
+}
+.precio-inline {
+  white-space: nowrap;
+  display: inline-block;
 }
