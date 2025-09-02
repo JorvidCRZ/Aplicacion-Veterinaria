@@ -1,10 +1,9 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
+import { AuthService } from '../../../core/services/auth.service';
+import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MenuItem } from '../../../core/models/menu-item';
-import { Usuario } from '../../../core/models/usuario';
-import { AuthService } from '../../../core/services/auth.service';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -13,7 +12,8 @@ import { Subscription } from 'rxjs';
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
-export class HeaderComponent implements OnInit, OnDestroy {
+
+export class HeaderComponent implements OnDestroy {
   menuItems: MenuItem[] = [
     { label: 'Inicio', route: '/inicio', exact: true },
     { label: 'Nosotros', route: '/nosotros' },
@@ -22,29 +22,32 @@ export class HeaderComponent implements OnInit, OnDestroy {
     { label: 'Adopción', route: '/adopcion' }
   ];
 
-  logueado: boolean = false;
-  usuarioActivo: Usuario | null = null;
-  private authSubscription!: Subscription;
 
-  constructor(private authService: AuthService) { }
+
+  logueado: boolean = false;
+  nombreUsuario: string | null = null;
+  userEmail: string | null = null;
+  private userSub?: Subscription;
+
+  constructor(private authService: AuthService) {}
 
   ngOnInit() {
-    // Suscribirse a los cambios del estado de autenticación
-    this.authSubscription = this.authService.authState$.subscribe(authState => {
-      this.logueado = authState.isLoggedIn;
-      this.usuarioActivo = authState.user;
-      console.log('Header actualizado - Estado de login:', this.logueado, 'Usuario:', this.usuarioActivo);
+    this.userSub = this.authService.currentUser$.subscribe(user => {
+      this.logueado = !!user;
+  this.nombreUsuario = (user && ('name' in user) ? user.name : (user as any)?.nombre) || null;
+      this.userEmail = user?.email || null;
     });
   }
 
   ngOnDestroy() {
-    if (this.authSubscription) {
-      this.authSubscription.unsubscribe();
-    }
+    this.userSub?.unsubscribe();
+  }
+
+  getUserEmail(): string {
+    return this.userEmail || '';
   }
 
   cerrarSesion() {
     this.authService.logout();
   }
 }
-

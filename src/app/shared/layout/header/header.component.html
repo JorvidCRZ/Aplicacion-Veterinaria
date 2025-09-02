@@ -6,7 +6,7 @@
             <span routerLink="inicio" class="titulo h5 mb-0">Pets Secretz</span>
         </div>
 
-        <nav class="menu d-none d-md-flex position-absolute start-50 translate-middle-x">
+        <nav class="menu d-none d-lg-flex position-absolute start-50 translate-middle-x">
             <ul class="nav">
                 <li *ngFor="let item of menuItems" class="nav-item px-3">
                     <a class="nav-link" [routerLink]="item.route" routerLinkActive="active"
@@ -15,21 +15,62 @@
             </ul>
         </nav>
 
-        <div class="d-none d-md-flex align-items-center me-4">
+        <!-- Desktop: Carrito y Usuario -->
+        <div class="d-none d-lg-flex align-items-center me-4">
             <a routerLink="/carrito" class="me-4" title="Carrito"><i class="icono fa fa-shopping-cart fa-lg"></i></a>
-            <ng-container *ngIf="!logueado">
+            <div class="dropdown" *ngIf="logueado; else loginLink">
+                <button class="btn btn-link p-0 border-0 dropdown-toggle d-flex align-items-center" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="icono fa fa-user-circle fa-2x"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end mt-2 shadow" aria-labelledby="userDropdown" style="min-width: 220px;">
+                    <li class="px-3 py-2 border-bottom">
+                        <div class="fw-bold small mb-1">{{ nombreUsuario }}</div>
+                        <div class="text-muted small">{{ getUserEmail() }}</div>
+                    </li>
+                    <li><a class="dropdown-item" routerLink="/usuario/resumen"><i class="fa fa-tachometer-alt me-2"></i> Resumen</a></li>
+                    <li><a class="dropdown-item" routerLink="/usuario/pedidos"><i class="fa fa-shopping-bag me-2"></i> Mis Pedidos</a></li>
+                    <li><a class="dropdown-item" routerLink="/usuario/perfil"><i class="fa fa-user me-2"></i> Mi Perfil</a></li>
+                    <li><a class="dropdown-item" routerLink="/usuario/mascotas"><i class="fa fa-paw me-2"></i> Mis Mascotas</a></li>
+                    <li><a class="dropdown-item" routerLink="/usuario/adopciones"><i class="fa fa-heart me-2"></i> Mis Adopciones</a></li>
+                    <li><a class="dropdown-item" routerLink="/usuario/citas"><i class="fa fa-calendar me-2"></i> Mis Citas</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item text-danger" (click)="cerrarSesion()"><i class="fa fa-sign-out me-2"></i> Cerrar Sesión</a></li>
+                </ul>
+            </div>
+            <ng-template #loginLink>
                 <a routerLink="/login" title="Mi cuenta"><i class="icono fa fa-user fa-lg"></i></a>
-            </ng-container>
-            <ng-container *ngIf="logueado">
-                <a routerLink="/usuario" class="me-2" title="Perfil"><i class="icono fa fa-user-circle fa-lg"></i>{{ usuarioActivo?.nombre }}</a>
-                <button class="btn btn-outline-danger btn-sm ms-2" (click)="cerrarSesion()">Cerrar sesión</button>
-            </ng-container>
+            </ng-template>
         </div>
 
-        <button class="d-md-none btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuMobile"
-            aria-controls="menuMobile">
-            <i class="iconos fa fa-bars fa-lg"></i>
-        </button>
+        <!-- Mobile/Tablet: Carrito, Usuario y Hamburguesa en línea -->
+        <div class="d-flex d-lg-none align-items-center gap-3">
+            <a routerLink="/carrito" title="Carrito"><i class="iconos fa fa-shopping-cart fa-lg"></i></a>
+            <div class="dropdown" *ngIf="logueado; else loginLinkMobile">
+                <button class="btn btn-link p-0 border-0 dropdown-toggle d-flex align-items-center" type="button" id="userDropdownMobile" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="iconos fa fa-user-circle fa-lg"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end mt-2 shadow" aria-labelledby="userDropdownMobile" style="min-width: 200px;">
+                    <li class="px-3 py-2 border-bottom">
+                        <div class="fw-bold small mb-1">{{ nombreUsuario }}</div>
+                        <div class="text-muted small">{{ getUserEmail() }}</div>
+                    </li>
+                    <li><a class="dropdown-item" routerLink="/usuario/resumen"><i class="fa fa-tachometer-alt me-2"></i> Resumen</a></li>
+                    <li><a class="dropdown-item" routerLink="/usuario/pedidos"><i class="fa fa-shopping-bag me-2"></i> Mis Pedidos</a></li>
+                    <li><a class="dropdown-item" routerLink="/usuario/perfil"><i class="fa fa-user me-2"></i> Mi Perfil</a></li>
+                    <li><a class="dropdown-item" routerLink="/usuario/mascotas"><i class="fa fa-paw me-2"></i> Mis Mascotas</a></li>
+                    <li><a class="dropdown-item" routerLink="/usuario/adopciones"><i class="fa fa-heart me-2"></i> Mis Adopciones</a></li>
+                    <li><a class="dropdown-item" routerLink="/usuario/citas"><i class="fa fa-calendar me-2"></i> Mis Citas</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item text-danger" (click)="cerrarSesion()"><i class="fa fa-sign-out me-2"></i> Cerrar Sesión</a></li>
+                </ul>
+            </div>
+            <ng-template #loginLinkMobile>
+                <a routerLink="/login" title="Mi cuenta"><i class="iconos fa fa-user fa-lg"></i></a>
+            </ng-template>
+            <button class="btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuMobile" aria-controls="menuMobile">
+                <i class="iconos fa fa-bars fa-lg"></i>
+            </button>
+        </div>
         <!-- para mobiles -->
 
         <div class="contenedor-mobile offcanvas offcanvas-start " tabindex="-1" id="menuMobile"
@@ -43,24 +84,12 @@
                     aria-label="Close"></button>
             </div>
             <div class="offcanvas-body p-0">
-                <ul class="menu-mobile nav flex-column mb-2 text-center d-md-none">
+                <ul class="menu-mobile nav flex-column mb-2 text-center">
                     <li *ngFor="let item of menuItems" class="nav-item m-0">
                         <a class="nav-link" [routerLink]="item.route" routerLinkActive="active"
                             [routerLinkActiveOptions]="{ exact: item.exact || false }"> {{ item.label }}</a>
                     </li>
                 </ul>
-
-                <div class="d-flex gap-3 m-3 justify-content-evenly">
-                    <a routerLink="/carrito" title="Carrito"><i class="iconos fa fa-shopping-cart fa-lg"></i></a>
-                    <ng-container *ngIf="!logueado">
-                        <a routerLink="/login" title="Mi cuenta"><i class="iconos fa fa-user fa-lg"></i></a>
-                    </ng-container>
-                    <ng-container *ngIf="logueado">
-                        <a routerLink="/perfil" title="Perfil"><i class="iconos fa fa-user-circle fa-lg"></i> {{ usuarioActivo?.nombre }}</a>
-                        <button class="btn btn-outline-danger btn-sm ms-2" (click)="cerrarSesion()">Cerrar
-                            sesión</button>
-                    </ng-container>
-                </div>
             </div>
         </div>
 

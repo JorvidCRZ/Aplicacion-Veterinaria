@@ -11,8 +11,15 @@ import { CheckoutComponent } from './features/private/checkout/checkout.componen
 import { RegistroComponent } from './features/auth/registro/registro.component';
 import { ServicioFormularioComponent } from './features/public/components/servicio-formulario/servicio-formulario.component';
 import { DetalleProductoComponent } from './features/public/components/detalle-producto/detalle-producto.component';
-import { UsuarioComponent } from './features/private/dashboard/usuario/usuario.component';
+import { UsuarioComponent } from './features/private/dashboard/cliente/usuario/usuario.component';
 import { AuthGuard } from './core/guards/auth.guard';
+import { ResumenComponent } from './features/private/dashboard/cliente/resumen/resumen.component';
+import { PerfilComponent } from './features/private/dashboard/cliente/perfil/perfil.component';
+import { MisCitasComponent } from './features/private/dashboard/cliente/mis-citas/mis-citas.component';
+import { MisAdopcionesComponent } from './features/private/dashboard/cliente/mis-adopciones/mis-adopciones.component';
+import { MisPedidosComponent } from './features/private/dashboard/cliente/mis-pedidos/mis-pedidos.component';
+import { MisMascotasComponent } from './features/private/dashboard/cliente/mis-mascotas/mis-mascotas.component';
+
 
 export const routes: Routes = [
     { path: '', redirectTo: 'inicio', pathMatch: 'full' },
@@ -28,5 +35,19 @@ export const routes: Routes = [
     { path: 'registro', component: RegistroComponent },
     { path: 'usuario', component: UsuarioComponent },
     { path: 'servicio-formulario', component: ServicioFormularioComponent, canActivate: [AuthGuard] },
-    { path: 'detalle-producto/:id', component: DetalleProductoComponent }
+    { path: 'detalle-producto/:id', component: DetalleProductoComponent },
+    {
+        path: 'usuario',
+        component: UsuarioComponent,
+        canActivate: [AuthGuard],
+        children: [
+            { path: '', redirectTo: 'resumen', pathMatch: 'full' },
+            { path: 'resumen', component: ResumenComponent },
+            { path: 'perfil', component: PerfilComponent },
+            { path: 'mascotas', component: MisMascotasComponent },
+            { path: 'citas', component: MisCitasComponent },
+            { path: 'adopciones', component: MisAdopcionesComponent },
+            { path: 'pedidos', component: MisPedidosComponent }
+        ]
+    }
 ];

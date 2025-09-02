@@ -1,3 +1,127 @@
+/* Dropdown usuario simple y compacto */
+.dropdown-menu {
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0 2px 12px 0 rgba(0,0,0,0.10);
+    background: var(--blanco);
+    min-width: 160px;
+    padding: 0.25rem 0;
+    /* Alinear items del dropdown a la izquierda en TODAS las resoluciones */
+    text-align: left;
+}
+.dropdown-menu .dropdown-item {
+    font-size: 0.97rem;
+    color: var(--azul);
+    border-radius: 5px;
+    margin: 0 0.25rem;
+    padding: 0.45rem 1rem;
+    transition: background 0.18s, color 0.18s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    /* Forzar alineación a la izquierda */
+    justify-content: flex-start;
+    text-align: left;
+}
+.dropdown-menu .dropdown-item:hover, .dropdown-menu .dropdown-item:focus {
+    background: var(--azul);
+    color: var(--blanco);
+}
+.dropdown-menu .dropdown-item.text-danger {
+    color: #e74c3c;
+}
+.dropdown-menu .dropdown-item.text-danger:hover {
+    background: #ffeaea;
+    color: #e74c3c;
+}
+.dropdown-menu .px-3.py-2.border-bottom {
+    background: transparent;
+    border-bottom: 1px solid #e9ecef;
+    margin-bottom: 0.25rem;
+    padding: 0.5rem 1rem 0.5rem 1rem;
+    /* Alinear información del usuario a la izquierda */
+    text-align: left;
+}
+.dropdown-menu .fw-bold.small.mb-1 {
+    color: var(--azul);
+    font-size: 1rem;
+}
+.dropdown-menu .text-muted.small {
+    color: #888;
+    font-size: 0.93rem;
+}
+.dropdown-toggle:after {
+    display: none;
+}
+.fa-user-circle {
+    color: var(--azul);
+    transition: color 0.2s;
+    font-size: 1.5rem;
+}
+.fa-user-circle:hover {
+    color: var(--azul);
+}
+@media (max-width: 767px) {
+    .dropdown-menu {
+        left: auto !important;
+        right: 0 !important;
+        min-width: 150px;
+    }
+}
+
+/* Estilos para iconos en móvil/tablet */
+.iconos {
+    color: var(--blanco) !important;
+    font-size: 1.2rem !important;
+    padding: 8px;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+
+
+.icono {
+    color: var(--azul) !important;
+
+    padding: 8px;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+
+
+/* Botón del hamburguesa */
+.btn {
+    border: none !important;
+    background: transparent !important;
+    padding: 8px !important;
+}
+
+.btn:focus {
+    box-shadow: none !important;
+}
+
+/* Enlaces con iconos */
+a[routerLink] {
+    text-decoration: none !important;
+}
+
+a[routerLink]:hover {
+    text-decoration: none !important;
+}
+
+/* Estilos específicos para la sección móvil */
+.d-lg-none a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.d-lg-none .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
 header {
     background: var(--blanco);
     padding: 10px 40px;
@@ -101,10 +225,10 @@ header {
     }
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1439px) {
     .nav-item {
-        padding-left: 0 !important;
-        padding-right: 0 !important;
+        padding-left: 3px !important;
+        padding-right: 3px !important;
     }
 
     .menu {
@@ -155,9 +279,23 @@ header {
             }
         }
     }
+
+    /* Alinear items del dropdown a la izquierda en tablets */
+    .dropdown-menu {
+        text-align: left;
+    }
+    
+    .dropdown-menu .dropdown-item {
+        justify-content: flex-start;
+        text-align: left;
+    }
+    
+    .dropdown-menu .px-3.py-2.border-bottom {
+        text-align: left;
+    }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 992px) {
     header {
         background: var(--azul);
 
@@ -178,8 +316,19 @@ header {
                 }
             }
         }
-
     }
 
-
+    /* Alinear items del dropdown a la izquierda en móvil */
+    .dropdown-menu {
+        text-align: left;
+    }
+    
+    .dropdown-menu .dropdown-item {
+        justify-content: flex-start;
+        text-align: left;
+    }
+    
+    .dropdown-menu .px-3.py-2.border-bottom {
+        text-align: left;
+    }
 }

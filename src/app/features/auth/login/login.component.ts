@@ -36,8 +36,8 @@ export class LoginComponent {
           this.authService.clearRedirectAfterLogin();
           this.router.navigate([redirectTo]);
         } else {
-          // Navegar al dashboard del usuario por defecto
-          this.router.navigate(['/usuario']);
+          // Navegar al resumen del dashboard del usuario por defecto
+          this.router.navigate(['/usuario/resumen']);
         }
       } else {
         this.error = 'Correo o contraseña incorrectos';
