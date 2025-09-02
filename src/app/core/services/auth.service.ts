@@ -1,96 +1,163 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Usuario } from '../models/usuario';
 import { BehaviorSubject } from 'rxjs';
+import { Usuario } from '../models/usuario'; // Debe tener: id: number; nombre: string; email: string; telefono?: string; password?: string;
 
-@Injectable({
-  providedIn: 'root'
-})
+type AuthState = { isLoggedIn: boolean; user: Usuario | null };
+
+@Injectable({ providedIn: 'root' })
 export class AuthService {
+  // Claves de storage (compat con código de tu equipo)
+  private readonly KEY_LOGGED = 'logueado';
+  private readonly KEY_USER_ACTIVE = 'usuarioActivo'; // versión compañeros
+  private readonly KEY_USER_LEGACY = 'usuario';       // versión antigua tuya
+  private readonly KEY_REDIRECT = 'redirectAfterLogin';
 
-  private authState = new BehaviorSubject<{isLoggedIn: boolean, user: Usuario | null}>({
-    isLoggedIn: this.isLoggedIn(),
-    user: this.getCurrentUser()
-  });
+  // Estado reactivo 1: solo usuario (compat con tu header actual)
+  private currentUserSubject = new BehaviorSubject<Usuario | null>(null);
+  public currentUser$ = this.currentUserSubject.asObservable();
 
-  public authState$ = this.authState.asObservable();
+  // Estado reactivo 2: isLoggedIn + user (compat con la versión de tus compañeros)
+  private authStateSubject = new BehaviorSubject<AuthState>({ isLoggedIn: false, user: null });
+  public authState$ = this.authStateSubject.asObservable();
 
-  constructor(private router: Router) { }
-
-  /**
-   * Verifica si el usuario está logueado
-   */
-  isLoggedIn(): boolean {
-    return localStorage.getItem('logueado') === 'true';
+  constructor(private router: Router) {
+    this.bootstrapFromStorage();
   }
 
-  /**
-   * Obtiene el usuario activo
-   */
-  getCurrentUser(): Usuario | null {
-    const userStr = localStorage.getItem('usuarioActivo');
-    return userStr ? JSON.parse(userStr) : null;
+  /** Lee de localStorage (incluye compat con claves antiguas) y sincroniza estado */
+  private bootstrapFromStorage(): void {
+    const isLoggedIn = localStorage.getItem(this.KEY_LOGGED) === 'true';
+
+    // Prioridad: usuarioActivo (nuevo) > usuario (legacy)
+    const rawUser = localStorage.getItem(this.KEY_USER_ACTIVE) ?? localStorage.getItem(this.KEY_USER_LEGACY);
+    const parsed = rawUser ? this.safeParse(rawUser) : null;
+
+    const user = parsed ? this.normalizeUser(parsed) : null;
+
+    // Si hay discrepancia entre logged y user, arreglar
+    if (isLoggedIn && !user) {
+      // Usuario faltante: desloguear coherentemente
+      this.persistAuth(false, null);
+      this.pushState(false, null);
+      return;
+    }
+
+    // Migrar a clave nueva (opcional): guardamos en usuarioActivo
+    if (user && localStorage.getItem(this.KEY_USER_ACTIVE) == null) {
+      localStorage.setItem(this.KEY_USER_ACTIVE, JSON.stringify(user));
+      localStorage.removeItem(this.KEY_USER_LEGACY);
+    }
+
+    this.pushState(isLoggedIn, user);
   }
 
-  /**
-   * Verifica si el usuario está autenticado y redirige al login si no lo está
-   * @param redirectTo - Ruta a la que redirigir después del login (opcional)
-   * @returns true si está autenticado, false si no
-   */
-  requireAuth(redirectTo?: string): boolean {
-    if (this.isLoggedIn()) {
-      return true;
+  /** Normaliza cualquier objeto a Usuario válido (crea id si falta) */
+  private normalizeUser(u: any): Usuario {
+    const id: number =
+      typeof u?.id === 'number' ? u.id :
+      Number(localStorage.getItem('usuario_id_seq')) ||
+      Date.now();
+
+    // si generamos id por primera vez, dejamos una semilla sencilla
+    if (typeof u?.id !== 'number') {
+      localStorage.setItem('usuario_id_seq', String(id));
+    }
+
+    const user: Usuario = {
+      id,
+      nombre: u?.nombre ?? u?.name ?? 'Usuario',
+      email: u?.email ?? 'sin-correo@example.com',
+      telefono: u?.telefono ?? u?.phone ?? '',
+      password: u?.password ?? '',
+    };
+    return user;
+  }
+
+  private safeParse(str: string): any | null {
+    try { return JSON.parse(str); } catch { return null; }
+  }
+
+  /** Persiste login + usuario en storage coherente */
+  private persistAuth(isLoggedIn: boolean, user: Usuario | null): void {
+    localStorage.setItem(this.KEY_LOGGED, String(isLoggedIn));
+    if (user) {
+      localStorage.setItem(this.KEY_USER_ACTIVE, JSON.stringify(user));
+      localStorage.removeItem(this.KEY_USER_LEGACY); // limpiamos legacy
     } else {
-      // Guardar la ruta de destino para redirigir después del login
-      if (redirectTo) {
-        localStorage.setItem('redirectAfterLogin', redirectTo);
-      }
-      this.router.navigate(['/login']);
-      return false;
+      localStorage.removeItem(this.KEY_USER_ACTIVE);
     }
   }
 
-  /**
-   * Obtiene la ruta de redirección después del login
-   */
-  getRedirectAfterLogin(): string | null {
-    return localStorage.getItem('redirectAfterLogin');
+  /** Emite a ambos subjects para mantener compatibilidad */
+  private pushState(isLoggedIn: boolean, user: Usuario | null): void {
+    this.currentUserSubject.next(user);
+    this.authStateSubject.next({ isLoggedIn, user });
   }
 
-  /**
-   * Limpia la ruta de redirección después del login
-   */
-  clearRedirectAfterLogin(): void {
-    localStorage.removeItem('redirectAfterLogin');
-  }
-
-  /**
-   * Actualiza el estado de autenticación
-   */
+  /** Sincroniza desde storage hacia subjects */
   private updateAuthState(): void {
-    this.authState.next({
-      isLoggedIn: this.isLoggedIn(),
-      user: this.getCurrentUser()
-    });
+    const isLogged = this.isLoggedIn();
+    const user = this.getCurrentUser();
+    this.pushState(isLogged, user);
   }
 
-  /**
-   * Establece el usuario como logueado
-   */
-  setLoggedIn(user: Usuario): void {
-    localStorage.setItem('logueado', 'true');
-    localStorage.setItem('usuarioActivo', JSON.stringify(user));
+  // ----------------- API pública -----------------
+
+  isLoggedIn(): boolean {
+    return localStorage.getItem(this.KEY_LOGGED) === 'true';
+  }
+
+  getCurrentUser(): Usuario | null {
+    const str = localStorage.getItem(this.KEY_USER_ACTIVE) ?? localStorage.getItem(this.KEY_USER_LEGACY);
+    return str ? this.normalizeUser(this.safeParse(str)) : null;
+  }
+
+  /** Permite login con un objeto "libre" (registro manual, formularios diversos) */
+  loginWithLocalUser(user: any): void {
+    const normalized = this.normalizeUser(user);
+    this.persistAuth(true, normalized);
     this.updateAuthState();
   }
 
-  /**
-   * Cierra la sesión del usuario
-   */
+  /** Login directo cuando ya tienes un Usuario o parcial (compat con componentes) */
+  setLoggedIn(user: any): void {
+    const normalized = this.normalizeUser(user);
+    this.persistAuth(true, normalized);
+    this.updateAuthState();
+  }
+
+  /** Protege rutas; si no está logueado, guarda redirect y navega a /login */
+  requireAuth(redirectTo?: string): boolean {
+    if (this.isLoggedIn()) return true;
+    if (redirectTo) localStorage.setItem(this.KEY_REDIRECT, redirectTo);
+    this.router.navigate(['/login']);
+    return false;
+  }
+
+  getRedirectAfterLogin(): string | null {
+    return localStorage.getItem(this.KEY_REDIRECT);
+  }
+
+  clearRedirectAfterLogin(): void {
+    localStorage.removeItem(this.KEY_REDIRECT);
+  }
+
+  /** Actualización parcial del usuario (perfil) */
+  updateUser(userData: Partial<Usuario>): void {
+    const current = this.getCurrentUser();
+    if (!current) return;
+    const updated = this.normalizeUser({ ...current, ...userData });
+    this.persistAuth(true, updated);
+    this.updateAuthState();
+  }
+
+  /** Cierra sesión y redirige a /login */
   logout(): void {
-    localStorage.setItem('logueado', 'false');
-    localStorage.removeItem('usuarioActivo');
-    localStorage.removeItem('redirectAfterLogin');
+    this.persistAuth(false, null);
+    this.clearRedirectAfterLogin();
     this.updateAuthState();
     this.router.navigate(['/login']);
   }
 }
+
