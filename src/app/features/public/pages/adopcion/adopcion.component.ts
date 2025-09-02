@@ -6,6 +6,8 @@ import { FiltroAdopcion } from '../../../../core/models/filtro-mascota';
 import { MascotaService } from '../../../../core/services/mascota.service';
 import { MascotaCardComponent } from '../../../../shared/components/mascota-card/mascota-card.component';
 import { FiltroMascotaComponent } from '../../../../shared/components/filtro-mascota/filtro-mascota.component';
+import { AuthService } from '../../../../core/services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-adopcion',
@@ -37,7 +39,11 @@ export class AdopcionComponent implements OnInit {
     aceptaVisita: false
   };
 
-  constructor(private mascotaService: MascotaService) {}
+  constructor(
+    private mascotaService: MascotaService,
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.cargarMascotas();
@@ -84,9 +90,13 @@ export class AdopcionComponent implements OnInit {
   }
 
   adoptarMascota(mascota: Mascota): void {
-    console.log('Adoptando mascota:', mascota.nombre);
-    this.mascotaSeleccionada = mascota;
-    this.mostrarModalAdopcion = true;
+    // Verificar si el usuario está autenticado antes de mostrar el modal
+    if (this.authService.requireAuth('/adopcion')) {
+      console.log('Adoptando mascota:', mascota.nombre);
+      this.mascotaSeleccionada = mascota;
+      this.mostrarModalAdopcion = true;
+    }
+    // Si no está autenticado, requireAuth ya lo redirige al login
   }
 
   cerrarModalAdopcion(): void {
