@@ -22,7 +22,27 @@ export class AuthService {
   public authState$ = this.authStateSubject.asObservable();
 
   constructor(private router: Router) {
+    this.createDefaultAdmin();
     this.bootstrapFromStorage();
+  }
+
+  /** Crea un usuario admin predeterminado si no existe */
+  private createDefaultAdmin(): void {
+    const adminEmail = 'admin@admin.com';
+    const adminUser = {
+      id: 1,
+      nombre: 'Administrador',
+      email: adminEmail,
+      telefono: '999999999',
+      password: 'admin123',
+      rol: 'admin'
+    };
+    // Solo crear si no existe ningún usuario admin en storage
+    const raw = localStorage.getItem(this.KEY_USER_ACTIVE) ?? localStorage.getItem(this.KEY_USER_LEGACY);
+    if (!raw) {
+      localStorage.setItem(this.KEY_USER_ACTIVE, JSON.stringify(adminUser));
+      localStorage.setItem(this.KEY_LOGGED, 'false');
+    }
   }
 
   /** Lee de localStorage (incluye compat con claves antiguas) y sincroniza estado */
@@ -70,6 +90,7 @@ export class AuthService {
       email: u?.email ?? 'sin-correo@example.com',
       telefono: u?.telefono ?? u?.phone ?? '',
       password: u?.password ?? '',
+      rol: u?.rol ?? 'user'
     };
     return user;
   }

@@ -22,7 +22,9 @@
                 <button class="btn btn-link p-0 border-0 dropdown-toggle d-flex align-items-center" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="icono fa fa-user-circle fa-2x"></i>
                 </button>
-                <ul class="dropdown-menu dropdown-menu-end mt-2 shadow" aria-labelledby="userDropdown" style="min-width: 220px;">
+                
+                <!-- Menú Dropdown para Cliente -->
+                <ul class="dropdown-menu dropdown-menu-end mt-2 shadow" aria-labelledby="userDropdown" style="min-width: 220px;" *ngIf="!isAdmin">
                     <li class="px-3 py-2 border-bottom">
                         <div class="fw-bold small mb-1">{{ nombreUsuario }}</div>
                         <div class="text-muted small">{{ getUserEmail() }}</div>
@@ -33,6 +35,23 @@
                     <li><a class="dropdown-item" routerLink="/usuario/mascotas"><i class="fa fa-paw me-2"></i> Mis Mascotas</a></li>
                     <li><a class="dropdown-item" routerLink="/usuario/adopciones"><i class="fa fa-heart me-2"></i> Mis Adopciones</a></li>
                     <li><a class="dropdown-item" routerLink="/usuario/citas"><i class="fa fa-calendar me-2"></i> Mis Citas</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item text-danger" (click)="cerrarSesion()"><i class="fa fa-sign-out me-2"></i> Cerrar Sesión</a></li>
+                </ul>
+
+                <!-- Menú Dropdown para Administrador -->
+                <ul class="dropdown-menu dropdown-menu-end mt-2 shadow" aria-labelledby="userDropdown" style="min-width: 220px;" *ngIf="isAdmin">
+                    <li class="px-3 py-2 border-bottom">
+                        <div class="fw-bold small mb-1">{{ nombreUsuario }}</div>
+                        <div class="text-muted small">{{ getUserEmail() }}</div>
+                        <div class="badge bg-warning text-dark mt-1">Administrador</div>
+                    </li>
+                    <li><a class="dropdown-item" routerLink="/admin/panel"><i class="fa fa-tachometer-alt me-2"></i> Dashboard</a></li>
+                    <li><a class="dropdown-item" routerLink="/admin/usuarios"><i class="fa fa-users me-2"></i> Gestión de Usuarios</a></li>
+                    <li><a class="dropdown-item" routerLink="/admin/mascotas"><i class="fa fa-paw me-2"></i> Gestión de Adopciones</a></li>
+                    <li><a class="dropdown-item" routerLink="/admin/productos"><i class="fa fa-box me-2"></i> Gestión de Productos</a></li>
+                    <li><a class="dropdown-item" routerLink="/admin/pedidos"><i class="fa fa-shopping-bag me-2"></i> Gestión de Pedidos</a></li>
+                    <li><a class="dropdown-item" routerLink="/admin/citas"><i class="fa fa-calendar me-2"></i> Gestión de Citas</a></li>
                     <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item text-danger" (click)="cerrarSesion()"><i class="fa fa-sign-out me-2"></i> Cerrar Sesión</a></li>
                 </ul>
@@ -49,7 +68,9 @@
                 <button class="btn btn-link p-0 border-0 dropdown-toggle d-flex align-items-center" type="button" id="userDropdownMobile" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="iconos fa fa-user-circle fa-lg"></i>
                 </button>
-                <ul class="dropdown-menu dropdown-menu-end mt-2 shadow" aria-labelledby="userDropdownMobile" style="min-width: 200px;">
+                
+                <!-- Menú Dropdown para Cliente (Mobile) -->
+                <ul class="dropdown-menu dropdown-menu-end mt-2 shadow" aria-labelledby="userDropdownMobile" style="min-width: 200px;" *ngIf="!isAdmin">
                     <li class="px-3 py-2 border-bottom">
                         <div class="fw-bold small mb-1">{{ nombreUsuario }}</div>
                         <div class="text-muted small">{{ getUserEmail() }}</div>
@@ -60,6 +81,23 @@
                     <li><a class="dropdown-item" routerLink="/usuario/mascotas"><i class="fa fa-paw me-2"></i> Mis Mascotas</a></li>
                     <li><a class="dropdown-item" routerLink="/usuario/adopciones"><i class="fa fa-heart me-2"></i> Mis Adopciones</a></li>
                     <li><a class="dropdown-item" routerLink="/usuario/citas"><i class="fa fa-calendar me-2"></i> Mis Citas</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item text-danger" (click)="cerrarSesion()"><i class="fa fa-sign-out me-2"></i> Cerrar Sesión</a></li>
+                </ul>
+
+                <!-- Menú Dropdown para Administrador (Mobile) -->
+                <ul class="dropdown-menu dropdown-menu-end mt-2 shadow" aria-labelledby="userDropdownMobile" style="min-width: 200px;" *ngIf="isAdmin">
+                    <li class="px-3 py-2 border-bottom">
+                        <div class="fw-bold small mb-1">{{ nombreUsuario }}</div>
+                        <div class="text-muted small">{{ getUserEmail() }}</div>
+                        <div class="badge bg-warning text-dark mt-1">Admin</div>
+                    </li>
+                    <li><a class="dropdown-item" routerLink="/admin/dashboard"><i class="fa fa-tachometer-alt me-2"></i> Dashboard</a></li>
+                    <li><a class="dropdown-item" routerLink="/admin/usuarios"><i class="fa fa-users me-2"></i> Gestión de Usuarios</a></li>
+                    <li><a class="dropdown-item" routerLink="/admin/mascotas"><i class="fa fa-paw me-2"></i> Gestión de Adopciones</a></li>
+                    <li><a class="dropdown-item" routerLink="/admin/productos"><i class="fa fa-box me-2"></i> Gestión de Productos</a></li>
+                    <li><a class="dropdown-item" routerLink="/admin/pedidos"><i class="fa fa-shopping-bag me-2"></i> Gestión de Pedidos</a></li>
+                    <li><a class="dropdown-item" routerLink="/admin/citas"><i class="fa fa-calendar me-2"></i> Gestión de Citas</a></li>
                     <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item text-danger" (click)="cerrarSesion()"><i class="fa fa-sign-out me-2"></i> Cerrar Sesión</a></li>
                 </ul>
@@ -95,3 +133,4 @@
 
     </div>
 </header>
+

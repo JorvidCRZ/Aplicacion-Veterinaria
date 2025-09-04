@@ -12,6 +12,7 @@ import { RegistroComponent } from './features/auth/registro/registro.component';
 import { ServicioFormularioComponent } from './features/public/components/servicio-formulario/servicio-formulario.component';
 import { DetalleProductoComponent } from './features/public/components/detalle-producto/detalle-producto.component';
 import { UsuarioComponent } from './features/private/dashboard/cliente/usuario/usuario.component';
+import { AdminComponent } from './features/private/dashboard/admin/admin.component';
 import { AuthGuard } from './core/guards/auth.guard';
 import { ResumenComponent } from './features/private/dashboard/cliente/resumen/resumen.component';
 import { PerfilComponent } from './features/private/dashboard/cliente/perfil/perfil.component';
@@ -49,5 +50,23 @@ export const routes: Routes = [
             { path: 'adopciones', component: MisAdopcionesComponent },
             { path: 'pedidos', component: MisPedidosComponent }
         ]
+    },
+
+    // Rutas para el dashboard de administrador
+    {
+        path: 'admin',
+        component: AdminComponent,
+        canActivate: [AuthGuard],
+        children: [
+            { path: '', redirectTo: 'panel', pathMatch: 'full' },
+            { path: 'panel', loadComponent: () => import('./features/private/dashboard/admin/panel/panel.component').then(m => m.PanelComponent) },
+            { path: 'usuarios', loadComponent: () => import('./features/private/dashboard/admin/usuarios/usuarios.component').then(m => m.UsuariosComponent) },
+            { path: 'mascotas', loadComponent: () => import('./features/private/dashboard/admin/mascotas/mascotas.component').then(m => m.MascotasComponent) },
+            { path: 'productos', loadComponent: () => import('./features/private/dashboard/admin/productos/productos.component').then(m => m.ProductosComponent) },
+            
+            { path: 'pedidos', loadComponent: () => import('./features/private/dashboard/admin/pedidos/pedidos.component').then(m => m.PedidosComponent) },
+            { path: 'citas', loadComponent: () => import('./features/private/dashboard/admin/citas/citas.component').then(m => m.CitasComponent) }
+        ]
     }
+
 ];
