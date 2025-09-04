@@ -13,8 +13,7 @@ import { MenuItem } from '../../../core/models/menu-item';
   styleUrl: './header.component.css'
 })
 
-export class HeaderComponent implements OnDestroy {
-  menuItems: MenuItem[] = [
+export class HeaderComponent implements OnDestroy {menuItems: MenuItem[] = [
     { label: 'Inicio', route: '/inicio', exact: true },
     { label: 'Nosotros', route: '/nosotros' },
     { label: 'Servicios', route: '/servicios' },
@@ -22,11 +21,10 @@ export class HeaderComponent implements OnDestroy {
     { label: 'Adopción', route: '/adopcion' }
   ];
 
-
-
   logueado: boolean = false;
   nombreUsuario: string | null = null;
   userEmail: string | null = null;
+  isAdmin: boolean = false;
   private userSub?: Subscription;
 
   constructor(private authService: AuthService) {}
@@ -34,8 +32,9 @@ export class HeaderComponent implements OnDestroy {
   ngOnInit() {
     this.userSub = this.authService.currentUser$.subscribe(user => {
       this.logueado = !!user;
-  this.nombreUsuario = (user && ('name' in user) ? user.name : (user as any)?.nombre) || null;
+      this.nombreUsuario = (user && ('name' in user) ? user.name : (user as any)?.nombre) || null;
       this.userEmail = user?.email || null;
+      this.isAdmin = user?.rol === 'admin';
     });
   }
 
