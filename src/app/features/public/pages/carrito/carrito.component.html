@@ -1,61 +1,81 @@
-<section class="padded d-flex justify-center page-safe">
-  <div class="container carrito-container">
-    <div class="carrito-wrapper">
-      <table class="tabla cart-table table-sm">
-        <thead>
-          <tr>
-            <th>Código</th>
-            <th>Descripción</th>
-            <th>Precio</th>
-            <th>Cantidad</th>
-            <th>Subtotal</th>
-            <th></th>
-          </tr>
-        </thead>
+<div class="carrito-wrapper">
+<div *ngIf="carrito.length > 0" class="carrito-header">
+  <h1>Carrito de Compras</h1>
+  <p>Revisa tus productos antes de finalizar la compra</p>
+</div>
 
-        <tbody>
-          <tr *ngFor="let item of carrito; let i = index">
-            <td data-label="Código">{{ item.idproducto }}</td>
-            <td data-label="Descripción">{{ item.nombre }}</td>
-
-            <td data-label="Precio" class="text-end">
-            <span class="precio-inline"> S/ {{ item.precio | number:'1.2-2' }}</span>
-            </td>
-
-            <td data-label="Cantidad" class="text-center">
-              <input
-                type="number"
-                [(ngModel)]="item.cantidad"
-                (change)="actualizarCantidad()"
-                step="1" min="1"
-                class="form-control form-control-sm w-100" />
-            </td>
-
-            <td data-label="Subtotal" class="text-end fw-semibold">
-              S/ {{ (item.precio * item.cantidad) | number:'1.2-2' }}
-            </td>
-
-            <td data-label="Acciones" class="text-center">
-              <button class="boton btn btn-outline-danger btn-sm" (click)="eliminarItem(i)">
-                Eliminar
-              </button>
-            </td>
-          </tr>
-        </tbody>
-
-        <tfoot>
-          <tr class="bg-light fw-semibold">
-            <td colspan="4" class="text-end">Total</td>
-            <td id="total" class="text-end">S/ {{ total | number:'1.2-2' }}</td>
-            <td></td>
-          </tr>
-        </tfoot>
-      </table>
-
-      <div class="acciones mt-5 d-flex gap-3 flex-wrap justify-content-center justify-content-md-between">
-        <button class="boton btn btn-primary px-4" (click)="pagar()" [disabled]="!puedePagar()">Pagar</button>
-        <button class="boton btn btn-outline-primary px-4" (click)="vaciarCarrito()">Vaciar carrito</button>
-      </div>
+  <!-- Carrito vacío -->
+  <div *ngIf="carrito.length === 0" class="carrito-vacio">
+    <div class="carrito-icono">🛍️</div>
+    <h2>Tu carrito está vacío</h2>
+    <p>Agrega algunos productos para comenzar tu compra</p>
+    <div class="explorar-wrapper">
+      <button class="btn-explorar" (click)="irAProductos()">Explorar Productos</button>
     </div>
   </div>
-</section>
+
+  <!-- Carrito con productos -->
+  <div *ngIf="carrito.length > 0" class="carrito-contenedor">
+    <!-- Lista de productos -->
+    <div class="carrito-productos">
+      <div class="carrito-header-linea">
+        <h2>Productos ({{ carrito.length }})</h2>
+        <button class="btn-vaciar" (click)="vaciarCarrito()">🗑 Vaciar carrito</button>
+      </div>
+
+      <div *ngFor="let item of carrito; let i = index" class="producto-item">
+        <img class="producto-img" [src]="item.imagen" [alt]="item.nombre">
+        <div class="info">
+          <h3>{{ item.nombre }}</h3>
+          <p>{{ item.descripcion }}</p>
+          <span class="precio">PEN{{ item.precio }}</span>
+        </div>
+        <div class="acciones">
+          <button class="btn-cantidad" (click)="disminuirCantidad(item)" [disabled]="item.cantidad <= 1">-</button>
+          <input type="text" [(ngModel)]="item.cantidad" (change)="actualizarCantidad()">
+          <button class="btn-cantidad" (click)="aumentarCantidad(item)">+</button>
+          <button class="btn-eliminar" (click)="eliminarItem(i)">🗑</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Resumen del pedido -->
+    <div class="resumen-pedido">
+      <h3>Resumen del Pedido</h3>
+      <p class="subtitulo">Detalles de tu compra</p>
+
+      <div class="detalle">
+        <span>Subtotal:</span>
+<span>S/ {{ subtotal.toFixed(2) }}</span>
+      </div>
+      <div class="detalle">
+        <span>Envío:</span>
+        <span><strong>Gratis</strong></span>
+      </div>
+      <div class="detalle">
+        <span>Impuestos:</span>
+ <span>S/ {{ impuestos.toFixed(2) }}</span>
+      </div>
+      <hr>
+      <div class="detalle total">
+        <span>Total:</span>
+ <strong>S/ {{ total.toFixed(2) }}</strong>
+      </div>
+
+      <button class="btn-principal" (click)="pagar()">
+        {{ logueado ? 'Finalizar Compra' : 'Iniciar Sesión para Comprar' }}
+      </button>
+
+      <p *ngIf="!logueado" class="nota">Necesitas una cuenta para finalizar la compra</p>
+
+      <button class="btn-secundario" (click)="irAProductos()">Continuar Comprando</button>
+
+
+  <ul class="beneficios">
+    <li>• Envío gratis en pedidos mayores a S/50</li>
+    <li>• Entrega en 2-3 días hábiles</li>
+    <li>• 30 días de garantía</li>
+  </ul>
+</div>
+
+

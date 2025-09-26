@@ -5,6 +5,8 @@ export interface ProductoCarrito {
   nombre: string;
   precio: number;
   cantidad: number;
+ imagen?: string;       
+  descripcion?: string;  
 }
 
 @Injectable({
@@ -39,7 +41,6 @@ export class CarritoService {
   vaciarCarrito(): void {
     sessionStorage.removeItem(this.storageKey);
   }
-
 
 
   bloquearDecimales(event: KeyboardEvent) {

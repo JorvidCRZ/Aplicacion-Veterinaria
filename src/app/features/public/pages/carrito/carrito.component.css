@@ -1,150 +1,279 @@
-/* ===== Colchón respecto a navbar/footer/FAB (móvil y desktop) ===== */
-:root{
-  --navbar-h: 64px;     /* ajusta a tu header real */
-  --footer-gap: 24px;
-  --fab-gap: 80px;      /* para que el FAB no tape botones */
+/* ====== Header (solo cuando hay productos) ====== */
+.carrito-header {
+  text-align: center;
+  margin: 30px 0;
 }
 
-/* Aplica el colchón a la sección actual */
-.page-safe {
-  padding-top: 80px;   /* distancia al navbar fijo */
-  padding-bottom: 120px; /* distancia al footer/FAB */
+.carrito-header h1 {
+  font-size: 28px;
+  font-weight: bold;
+  color: #333;
 }
 
-/* ===== Centrado en desktop ===== */
-.carrito-wrapper{
-  max-width: 900px;          /* ancho agradable en desktop */
-  margin: 0 auto;            /* centrado */
+.carrito-header p {
+  font-size: 16px;
+  color: #666;
 }
 
-/* ===== Tabla base (desktop) ===== */
-.tabla {
-  border-collapse: collapse;
-  width: 100%;
-  margin-bottom: 20px;
-  background: var(--blanco);
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 2px 10px rgba(0,0,0,.1);
+/* ====== Carrito vacío ====== */
+.carrito-vacio {
+  text-align: center;
+  padding: 40px 20px;
+  color: #333;
 }
-.tabla thead{ background: var(--azul); color: var(--blanco); }
-.tabla td,.tabla th{ padding:12px; border-bottom:1px solid var(--gris); text-align:center; }
-.tabla tbody tr:hover{ background: var(--gris-claro); }
-tfoot{ font-weight:bold; background: var(--gris); }
 
-input[type="number"]{
-  border:1px solid var(--gris-oscuro);
-  border-radius:5px;
-  padding:6px 12px; width:70px; text-align:center;
+.carrito-icono {
+  font-size: 60px;
+  margin-bottom: 15px;
 }
-input:focus{ border-color:var(--azul); box-shadow:0 0 0 .2rem rgba(53,107,255,.25); }
 
-.acciones{ text-align:right; }
-
-/* Cabecera azul consistente */
-.cart-table thead th{ background:#164a88; color:#fff; border-color:#164a88; }
-
-/* ===== Móvil: tabla -> tarjetas centradas y con aire ===== */
-@media (max-width: 576px){
-  :root{
-    --navbar-h: 60px;
-    --fab-gap: 96px;
-  }
-
-  .carrito-container{ padding-left:12px; padding-right:12px; }
-
-  .cart-table,
-  .cart-table thead,
-  .cart-table tbody,
-  .cart-table tfoot,
-  .cart-table th,
-  .cart-table td,
-  .cart-table tr{
-    display:block; width:100%;
-  }
-
-  /* Ocultamos cabecera y usamos data-label */
-  .cart-table thead{
-    position:absolute; height:0; width:0; overflow:hidden;
-    clip:rect(0 0 0 0); white-space:nowrap;
-  }
-
-  /* Tarjetas: centradas y separadas del navbar/footer */
-  .cart-table tbody tr{
-    margin: 0 auto 12px auto;     /* separación entre tarjetas */
-    border:1px solid #e8e8e8;
-    border-radius:12px;
-    box-shadow:0 2px 8px rgba(0,0,0,.04);
-    padding:10px 12px;
-    background:#fff;
-    max-width: 520px;             /* centrado + aire lateral */
-  }
-
-  /* Etiqueta (izq) + valor (der) compacto */
-  .cart-table td{
-    display:grid;
-    grid-template-columns: 92px 1fr;
-    gap:6px;
-    padding:6px 4px;
-    border:0 !important;
-    align-items:center;
-  }
-  .cart-table td::before{
-    content: attr(data-label);
-    font-weight:600;
-    color: var(--azul);
-  }
-  .cart-table td[data-label="Descripción"]{ line-height:1.2; }
-
-  /* Cantidad centrada con ancho cómodo */
-  .cart-table td[data-label="Cantidad"]{ justify-items:center; }
-  .cart-table td[data-label="Cantidad"] input[type="number"]{
-    width:120px; text-align:center;
-  }
-
-  /* Subtotal marcado a la derecha */
-  .cart-table td[data-label="Subtotal"]{
-    justify-items:end; font-weight:600;
-  }
-
-  /* Acciones: solo botón centrado */
-  .cart-table td[data-label="Acciones"]{
-    display:flex; justify-content:center; align-items:center; padding-top:10px;
-  }
-  .cart-table td[data-label="Acciones"]::before{ display:none; }
-
-  /* Total como tarjeta breve y centrada */
-  .cart-table tfoot tr{
-    display:grid;
-    grid-template-columns: 1fr auto;
-    padding:8px 12px;
-    border:1px solid #e8e8e8;
-    border-radius:12px;
-    background:#f7f9fc;
-    margin: 8px auto 0 auto;
-    width:100%;
-    max-width:520px;
-  }
-  .cart-table tfoot td{
-    display:block; border:0 !important; padding:6px 0;
-  }
-  .cart-table tfoot td:last-child{ text-align:right; white-space:nowrap; }
-
-  /* Botones: mismo ancho que tarjetas y despegar del FAB/footer */
-.acciones {
-  margin-top: 24px;
-  margin-bottom: 40px; /* extra aire antes del footer */
+.explorar-wrapper {
   display: flex;
   justify-content: center;
-  gap: 16px;
+  margin-top: 15px;
+}
+
+/* ====== Layout ====== */
+.carrito-contenedor {
+  display: flex;
+  gap: 20px;
+  margin: 20px 0;
   flex-wrap: wrap;
 }
-.acciones .btn {
-  flex: 1 1 200px;
-  max-width: 250px;
+
+.carrito-productos {
+  flex: 2;
+  min-width: 280px;
 }
+
+.resumen-pedido {
+  flex: 1;
+  min-width: 260px;
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  padding: 20px;
 }
-.precio-inline {
-  white-space: nowrap;
+
+/* ====== Productos ====== */
+.carrito-header-linea {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.producto-item {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+}
+
+.producto-item img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  margin-right: 15px;
+  border-radius: 8px;
+}
+
+.info {
+  flex: 1;
+  min-width: 150px;
+}
+
+.precio {
+  color: #0D47A1;
+  font-weight: bold;
+}
+
+/* ====== Acciones ====== */
+.acciones {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.acciones input {
+  width: 40px;
+  text-align: center;
+}
+
+/* ====== Botones ====== */
+.btn-explorar {
+  background-color: #0D47A1; /* Azul corporativo */
+  color: #fff;
+  padding: 12px 22px;
+  border-radius: 6px;
+  font-weight: bold;
+  text-decoration: none;
+  transition: background 0.3s ease;
+  border: none;
+  cursor: pointer;
+
+  /* 🔹 Centrado */
   display: inline-block;
+  margin: 20px auto 0 auto; 
+}
+
+.btn-explorar:hover {
+  background-color: #08306b;
+}
+.btn-principal {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  background-color: #0D47A1;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  margin: 10px 0;
+  text-align: center;
+}
+
+.btn-principal:hover {
+  background-color: #08306b;
+}
+.btn-vaciar {
+  padding: 6px 12px;
+  border: 1px solid #0D47A1;
+  border-radius: 6px;
+  background: #fff;
+  color: #0D47A1;
+  font-size: 13px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.btn-vaciar:hover {
+  background-color: #e3f2fd;
+}
+.btn-secundario {
+  display: inline-block;
+  width: 100%;
+  padding: 10px 18px;
+  border: 1px solid #0D47A1;
+  border-radius: 6px;
+  background: #fff;
+  color: #0D47A1;
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.btn-secundario:hover {
+  background-color: #e3f2fd;
+}
+
+.btn-cantidad {
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  background: #f5f5f5;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-cantidad:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-eliminar {
+  background: none;
+  border: none;
+  color: red;
+  cursor: pointer;
+}
+
+/* ====== Resumen ====== */
+.total {
+  font-size: 18px;
+  color: #0D47A1;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.nota {
+  font-size: 13px;
+  color: #888;
+  margin-bottom: 10px;
+}
+
+.beneficios {
+  font-size: 13px;
+  margin-top: 15px;
+  color: #555;
+  list-style: none;
+  padding: 0;
+}
+
+.beneficios li {
+  margin: 5px 0;
+}
+
+/* ====== Responsive ====== */
+@media (max-width: 768px) {
+  .carrito-contenedor {
+    flex-direction: column;
+  }
+
+  .resumen-pedido {
+    width: 100%;
+  }
+
+  .carrito-header h1 {
+    font-size: 22px;
+  }
+
+  .carrito-header p {
+    font-size: 14px;
+  }
+}
+.carrito-wrapper {
+  max-width: 1100px;   /* ancho máximo */
+  margin: 0 auto;      /* centra en la pantalla */
+  padding: 20px;
+}
+.resumen-pedido {
+  flex: 1;
+  min-width: 250px;
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.resumen-pedido h3 {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.resumen-pedido .subtitulo {
+  font-size: 14px;
+  color: #777;
+  margin-bottom: 15px;
+}
+/* Filas de detalle */
+.detalle {
+  display: flex;
+  justify-content: space-between;
+  margin: 8px 0;
+}
+
+.detalle.total span {
+  font-weight: bold;
+}
+
+.detalle.total strong {
+  font-weight: bold;
+  color: #0D47A1; /* Azul corporativo */
 }
