@@ -28,7 +28,7 @@
         <div class="info">
           <h3>{{ item.nombre }}</h3>
           <p>{{ item.descripcion }}</p>
-          <span class="precio">PEN{{ item.precio }}</span>
+          <span class="precio">S/{{ item.precio }}</span>
         </div>
         <div class="acciones">
           <button class="btn-cantidad" (click)="disminuirCantidad(item)" [disabled]="item.cantidad <= 1">-</button>
@@ -51,10 +51,6 @@
       <div class="detalle">
         <span>Envío:</span>
         <span><strong>Gratis</strong></span>
-      </div>
-      <div class="detalle">
-        <span>Impuestos:</span>
- <span>S/ {{ impuestos.toFixed(2) }}</span>
       </div>
       <hr>
       <div class="detalle total">

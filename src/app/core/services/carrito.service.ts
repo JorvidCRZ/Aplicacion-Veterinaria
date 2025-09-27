@@ -5,7 +5,7 @@ export interface ProductoCarrito {
   nombre: string;
   precio: number;
   cantidad: number;
- imagen?: string;       
+  imagen?: string;       
   descripcion?: string;  
 }
 

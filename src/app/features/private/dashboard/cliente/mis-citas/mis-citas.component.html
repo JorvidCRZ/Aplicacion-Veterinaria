@@ -61,3 +61,120 @@
         </div>
     </div>
 </div>
+
+<!-- Modal de Detalles de Cita -->
+<div class="modal fade" id="modalDetallesCita" tabindex="-1" aria-labelledby="modalDetallesCitaLabel" aria-hidden="true" *ngIf="citaSeleccionada">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content modal-detalle-cita">
+            <!-- Header simple y elegante -->
+            <div class="modal-header-detalle">
+                <h5 class="modal-title-detalle">Detalles de la Cita</h5>
+                <button type="button" class="btn-close-detalle" data-bs-dismiss="modal" aria-label="Close">×</button>
+            </div>
+
+            <div class="modal-body-detalle">
+                <!-- Estado y fecha en header interno -->
+                <div class="cita-header-info">
+                    <div class="estado-fecha-container">
+                        <span class="estado-badge" [ngClass]="getEstadoClass(citaSeleccionada.estado)">
+                            {{ getEstadoLabel(citaSeleccionada.estado) }}
+                        </span>
+                        <div class="fecha-info">
+                            <div class="fecha-texto">Fecha:</div>
+                            <div class="fecha-valor">{{ formatearFecha(citaSeleccionada.fechaPreferida) }}</div>
+                            <div class="hora-valor">{{ citaSeleccionada.horaPreferida }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Propietario Section -->
+                <div class="seccion-detalle">
+                    <div class="seccion-header">
+                        <i class="bi bi-person-circle seccion-icon propietario-icon"></i>
+                        <h6 class="seccion-titulo">Propietario</h6>
+                    </div>
+                    <div class="seccion-content">
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <span class="info-label">NOMBRE</span>
+                                <span class="info-valor">{{ citaSeleccionada.nombreCompleto || 'Usuario Actual' }}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">TELÉFONO</span>
+                                <span class="info-valor">{{ citaSeleccionada.telefono || 'No especificado' }}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">EMAIL</span>
+                                <span class="info-valor">{{ citaSeleccionada.email || 'No especificado' }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="seccion-grid">
+                    <!-- Mascota Section -->
+                    <div class="seccion-detalle">
+                        <div class="seccion-header">
+                            <i class="bi bi-heart-fill seccion-icon mascota-icon"></i>
+                            <h6 class="seccion-titulo">Mascota</h6>
+                        </div>
+                        <div class="seccion-content">
+                            <div class="info-item">
+                                <span class="info-label">NOMBRE</span>
+                                <span class="info-valor destacado">{{ citaSeleccionada.nombreMascota }}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">ESPECIE</span>
+                                <span class="info-valor">{{ citaSeleccionada.especie }}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">RAZA</span>
+                                <span class="info-valor">{{ citaSeleccionada.raza }}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">EDAD</span>
+                                <span class="info-valor">{{ citaSeleccionada.edad }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Servicio Section -->
+                    <div class="seccion-detalle">
+                        <div class="seccion-header">
+                            <i class="bi bi-hospital seccion-icon servicio-icon"></i>
+                            <h6 class="seccion-titulo">Servicio</h6>
+                        </div>
+                        <div class="seccion-content">
+                            <div class="info-item">
+                                <span class="info-label">SERVICIO</span>
+                                <span class="info-valor destacado">{{ citaSeleccionada.servicioRequerido }}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">SEDE</span>
+                                <span class="info-valor">{{ citaSeleccionada.sede }}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">VETERINARIO</span>
+                                <span class="info-valor veterinario-nombre">
+                                    <i class="bi bi-person-badge me-1"></i>
+                                    {{ citaSeleccionada.veterinario }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notas adicionales -->
+                <div class="seccion-detalle notas-seccion" *ngIf="citaSeleccionada.notasAdicionales">
+                    <div class="seccion-header">
+                        <i class="bi bi-sticky seccion-icon notas-icon"></i>
+                        <h6 class="seccion-titulo">Notas Adicionales</h6>
+                    </div>
+                    <div class="seccion-content">
+                        <div class="notas-texto">{{ citaSeleccionada.notasAdicionales }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

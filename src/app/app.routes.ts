@@ -62,8 +62,8 @@ export const routes: Routes = [
             { path: 'panel', loadComponent: () => import('./features/private/dashboard/admin/panel/panel.component').then(m => m.PanelComponent) },
             { path: 'usuarios', loadComponent: () => import('./features/private/dashboard/admin/usuarios/usuarios.component').then(m => m.UsuariosComponent) },
             { path: 'mascotas', loadComponent: () => import('./features/private/dashboard/admin/mascotas/mascotas.component').then(m => m.MascotasComponent) },
+            { path: 'adopciones', loadComponent: () => import('./features/private/dashboard/admin/adopciones/adopciones.component').then(m => m.AdopcionesComponent) },
             { path: 'productos', loadComponent: () => import('./features/private/dashboard/admin/productos/productos.component').then(m => m.ProductosComponent) },
-            
             { path: 'pedidos', loadComponent: () => import('./features/private/dashboard/admin/pedidos/pedidos.component').then(m => m.PedidosComponent) },
             { path: 'citas', loadComponent: () => import('./features/private/dashboard/admin/citas/citas.component').then(m => m.CitasComponent) }
         ]

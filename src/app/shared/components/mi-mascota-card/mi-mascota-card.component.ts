@@ -7,7 +7,6 @@ export interface MiMascota {
   raza: string;
   edad: number;
   foto: string;
-  estado: string;
   fechaRegistro: Date;
   proximaCita?: Date;
 }
@@ -24,31 +23,7 @@ export class MiMascotaCardComponent {
   @Output() agendarCita = new EventEmitter<MiMascota>();
   @Output() editar = new EventEmitter<MiMascota>();
 
-  getEstadoClass(estado: string): string {
-    switch (estado?.toLowerCase()) {
-      case 'activo':
-        return 'bg-success';
-      case 'inactivo':
-        return 'bg-secondary';
-      case 'tratamiento':
-        return 'bg-warning';
-      default:
-        return 'bg-primary';
-    }
-  }
 
-  getEstadoLabel(estado: string): string {
-    switch (estado?.toLowerCase()) {
-      case 'activo':
-        return 'Activo';
-      case 'inactivo':
-        return 'Inactivo';
-      case 'tratamiento':
-        return 'En Tratamiento';
-      default:
-        return estado;
-    }
-  }
 
   onAgendarCita(): void {
     this.agendarCita.emit(this.mascota);

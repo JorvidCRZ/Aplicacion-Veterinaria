@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MiPedido, MiPedidoCardComponent } from '../../../../../shared/components/mi-pedido-card/mi-pedido-card.component';
+import { AuthService } from '../../../../../core/services/auth.service';
 
 
 interface PedidoItem {
@@ -12,6 +13,12 @@ interface PedidoItem {
   subtotal: number;
 }
 
+interface Cliente {
+  nombre: string;
+  correo: string;
+  telefono: string;
+}
+
 interface Pedido {
   id: string;
   fechaPedido: string;
@@ -20,8 +27,11 @@ interface Pedido {
   numeroSeguimiento?: string;
   fechaEntrega?: string;
   direccionEntrega: string;
-  metodoPago: string;
+  ciudad?: string;
+  codigoPostal?: string;
+  metodoPago: 'Tarjeta de Crédito' | 'Tarjeta de Débito' | 'Yape';
   items: PedidoItem[];
+  cliente?: Cliente;
 }
 
 @Component({
@@ -31,7 +41,11 @@ interface Pedido {
   templateUrl: './mis-pedidos.component.html',
   styleUrl: './mis-pedidos.component.css'
 })
-export class MisPedidosComponent {
+export class MisPedidosComponent implements OnInit {
+  usuarioActual: any;
+  mostrarDetalle = false;
+  pedidoDetalle: Pedido | null = null;
+  
   pedidos: Pedido[] = [
     {
       id: 'PED-001',
@@ -41,6 +55,8 @@ export class MisPedidosComponent {
       numeroSeguimiento: 'TRK-789456123',
       fechaEntrega: '2025-08-30',
       direccionEntrega: 'Av. Los Pinos 123, Lima',
+      ciudad: 'Lima',
+      codigoPostal: '15001',
       metodoPago: 'Tarjeta de Crédito',
       items: [
         {
@@ -68,7 +84,9 @@ export class MisPedidosComponent {
       total: 156.80,
       numeroSeguimiento: 'TRK-987654321',
       direccionEntrega: 'Av. Los Pinos 123, Lima',
-      metodoPago: 'Transferencia Bancaria',
+      ciudad: 'Lima',
+      codigoPostal: '15001',
+      metodoPago: 'Tarjeta de Débito',
       items: [
         {
           id: '3',
@@ -101,8 +119,10 @@ export class MisPedidosComponent {
       fechaPedido: '2025-09-03',
       estado: 'procesando',
       total: 234.70,
-      direccionEntrega: 'Av. Los Pinos 123, Lima',
-      metodoPago: 'PayPal',
+      direccionEntrega: 'Calle Los Olivos 789, Miraflores',
+      ciudad: 'Lima',
+      codigoPostal: '15074',
+      metodoPago: 'Yape',
       items: [
         {
           id: '6',
@@ -135,8 +155,10 @@ export class MisPedidosComponent {
       fechaPedido: '2025-09-04',
       estado: 'pendiente',
       total: 67.80,
-      direccionEntrega: 'Av. Los Pinos 123, Lima',
-      metodoPago: 'Contra Entrega',
+      direccionEntrega: 'Av. El Sol 321, Villa El Salvador',
+      ciudad: 'Villa El Salvador',
+      codigoPostal: '15842',
+      metodoPago: 'Tarjeta de Crédito',
       items: [
         {
           id: '9',
@@ -209,8 +231,11 @@ export class MisPedidosComponent {
 
 
   verDetallesPedido(pedido: MiPedido): void {
-    console.log('Ver detalles del pedido:', pedido);
-    // Implementar lógica para mostrar detalles del pedido
+    // Encontrar el pedido completo
+    this.pedidoDetalle = this.pedidos.find(p => p.id === pedido.id) || null;
+    if (this.pedidoDetalle) {
+      this.mostrarDetalle = true;
+    }
   }
 
   transformPedido(pedido: Pedido): MiPedido {
@@ -228,5 +253,60 @@ export class MisPedidosComponent {
       metodoPago: pedido.metodoPago,
       fechaEntrega: pedido.fechaEntrega ? new Date(pedido.fechaEntrega) : undefined
     };
+  }
+
+  constructor(private authService: AuthService) {}
+
+  ngOnInit(): void {
+    // Obtener datos del usuario actual
+    this.usuarioActual = this.authService.getCurrentUser();
+    
+    // Actualizar los pedidos con los datos del usuario actual
+    this.actualizarDatosUsuario();
+  }
+
+  private actualizarDatosUsuario(): void {
+    // Los datos del cliente siempre deben ser del usuario actual logueado
+    if (this.usuarioActual) {
+      this.pedidos.forEach(pedido => {
+        // Agregar datos del cliente basados en el usuario actual
+        (pedido as any).cliente = {
+          nombre: this.usuarioActual.nombre || 'Usuario Actual',
+          correo: this.usuarioActual.email || '',
+          telefono: this.usuarioActual.telefono || ''
+        };
+      });
+    }
+  }
+
+  cerrarDetalle(): void {
+    this.mostrarDetalle = false;
+    this.pedidoDetalle = null;
+  }
+
+  formatPrice(price: number): string {
+    return `S/. ${price.toFixed(2)}`;
+  }
+
+  formatearFecha(fecha: string): string {
+    const partes = fecha.split('-');
+    const fechaLocal = new Date(parseInt(partes[0]), parseInt(partes[1]) - 1, parseInt(partes[2]));
+    
+    return fechaLocal.toLocaleDateString('es-ES', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  }
+
+  getEstadoBadgeClass(estado: string): string {
+    switch (estado) {
+      case 'pendiente': return 'status-pendiente';
+      case 'procesando': return 'status-procesando';
+      case 'enviado': return 'status-enviado';
+      case 'entregado': return 'status-entregado';
+      case 'cancelado': return 'status-cancelado';
+      default: return 'status-pendiente';
+    }
   }
 }

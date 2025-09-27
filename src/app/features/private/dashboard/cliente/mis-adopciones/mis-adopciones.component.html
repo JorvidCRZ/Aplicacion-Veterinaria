@@ -83,3 +83,176 @@
         </div>
     </div>
 </div>
+
+<!-- Modal de Detalles de Adopción -->
+<div class="modal fade" id="modalDetallesAdopcion" tabindex="-1" aria-labelledby="modalDetallesAdopcionLabel" aria-hidden="true" *ngIf="adopcionSeleccionada">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content modal-detalle-adopcion">
+            <!-- Header simple y elegante -->
+            <div class="modal-header-detalle">
+                <h5 class="modal-title-detalle">Detalles de la Solicitud de Adopción</h5>
+                <button type="button" class="btn-close-detalle" data-bs-dismiss="modal" aria-label="Close">×</button>
+            </div>
+
+            <div class="modal-body-detalle">
+                <!-- Estado y fecha en header interno -->
+                <div class="adopcion-header-info">
+                    <div class="estado-fecha-container">
+                        <span class="estado-badge" [ngClass]="getEstadoClass(adopcionSeleccionada.estado)">
+                            <i class="bi" [ngClass]="getEstadoIcon(adopcionSeleccionada.estado)"></i>
+                            {{ getEstadoLabel(adopcionSeleccionada.estado) }}
+                        </span>
+                        <div class="fecha-info">
+                            <div class="fecha-texto">Fecha de Solicitud:</div>
+                            <div class="fecha-valor">{{ formatearFecha(adopcionSeleccionada.fecha) }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mascota Section -->
+                <div class="seccion-detalle">
+                    <div class="seccion-header">
+                        <i class="bi bi-heart-fill seccion-icon mascota-icon"></i>
+                        <h6 class="seccion-titulo">Mascota a Adoptar</h6>
+                    </div>
+                    <div class="seccion-content">
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <span class="info-label">NOMBRE</span>
+                                <span class="info-valor destacado">{{ adopcionSeleccionada.nombreMascota }}</span>
+                            </div>
+                            <div class="info-item" *ngIf="adopcionSeleccionada.raza">
+                                <span class="info-label">RAZA</span>
+                                <span class="info-valor">{{ adopcionSeleccionada.raza }}</span>
+                            </div>
+                            <div class="info-item" *ngIf="adopcionSeleccionada.edad">
+                                <span class="info-label">EDAD</span>
+                                <span class="info-valor">{{ adopcionSeleccionada.edad }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Solicitante Section -->
+                <div class="seccion-detalle">
+                    <div class="seccion-header">
+                        <i class="bi bi-person-circle seccion-icon propietario-icon"></i>
+                        <h6 class="seccion-titulo">Información del Solicitante</h6>
+                    </div>
+                    <div class="seccion-content">
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <span class="info-label">NOMBRE COMPLETO</span>
+                                <span class="info-valor">{{ adopcionSeleccionada.nombreSolicitante || 'Usuario Actual' }}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">EMAIL</span>
+                                <span class="info-valor">{{ adopcionSeleccionada.email || 'No especificado' }}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">TELÉFONO</span>
+                                <span class="info-valor">{{ adopcionSeleccionada.telefono || 'No especificado' }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="seccion-grid">
+                    <!-- Experiencia y Vivienda Section -->
+                    <div class="seccion-detalle">
+                        <div class="seccion-header">
+                            <i class="bi bi-house seccion-icon vivienda-icon"></i>
+                            <h6 class="seccion-titulo">Experiencia y Vivienda</h6>
+                        </div>
+                        <div class="seccion-content">
+                            <div class="info-item" *ngIf="adopcionSeleccionada.experiencia">
+                                <span class="info-label">EXPERIENCIA</span>
+                                <span class="info-valor ">{{ adopcionSeleccionada.experiencia }}</span>
+                            </div>
+                            <div class="info-item" *ngIf="adopcionSeleccionada.tipoVivienda">
+                                <span class="info-label">TIPO DE VIVIENDA</span>
+                                <span class="info-valor">{{ adopcionSeleccionada.tipoVivienda }}</span>
+                            </div>
+                            <div class="info-item" *ngIf="adopcionSeleccionada.otrasMascotas">
+                                <span class="info-label">OTRAS MASCOTAS</span>
+                                <span class="info-valor texto-largo">{{ adopcionSeleccionada.otrasMascotas }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Horario y Motivación Section -->
+                    <div class="seccion-detalle">
+                        <div class="seccion-header">
+                            <i class="bi bi-clock seccion-icon horario-icon"></i>
+                            <h6 class="seccion-titulo">Horario y Motivación</h6>
+                        </div>
+                        <div class="seccion-content">
+                            <div class="info-item" *ngIf="adopcionSeleccionada.horarioTrabajo">
+                                <span class="info-label">HORARIO DE TRABAJO</span>
+                                <span class="info-valor">{{ adopcionSeleccionada.horarioTrabajo }}</span>
+                            </div>
+                            <div class="info-item" *ngIf="adopcionSeleccionada.motivacion">
+                                <span class="info-label">MOTIVACIÓN</span>
+                                <span class="info-valor texto-largo">{{ adopcionSeleccionada.motivacion }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contactos de Emergencia Section -->
+                <div class="seccion-detalle">
+                    <div class="seccion-header">
+                        <i class="bi bi-telephone seccion-icon contacto-icon"></i>
+                        <h6 class="seccion-titulo">Contactos de Referencia</h6>
+                    </div>
+                    <div class="seccion-content">
+                        <div class="info-grid">
+                            <div class="info-item" *ngIf="adopcionSeleccionada.contactoEmergencia">
+                                <span class="info-label">CONTACTO DE EMERGENCIA</span>
+                                <span class="info-valor">{{ adopcionSeleccionada.contactoEmergencia }}</span>
+                            </div>
+                            <div class="info-item" *ngIf="adopcionSeleccionada.veterinario">
+                                <span class="info-label">VETERINARIO DE REFERENCIA</span>
+                                <span class="info-valor veterinario-nombre">
+                                    <i class="bi bi-person-badge me-1"></i>
+                                    {{ adopcionSeleccionada.veterinario }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Compromisos Section -->
+                <div class="seccion-detalle compromisos-seccion">
+                    <div class="seccion-header">
+                        <i class="bi bi-check-square seccion-icon compromiso-icon"></i>
+                        <h6 class="seccion-titulo">Compromisos</h6>
+                    </div>
+                    <div class="seccion-content">
+                        <div class="compromiso-grid">
+                            <div class="compromiso-item" *ngIf="adopcionSeleccionada.aceptaTerminos">
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                <span>Acepta términos y condiciones</span>
+                            </div>
+                            <div class="compromiso-item" *ngIf="adopcionSeleccionada.aceptaVisita">
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                <span>Acepta visitas de seguimiento</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Estado de la solicitud -->
+                <div class="seccion-detalle estado-seccion" *ngIf="adopcionSeleccionada.mensaje">
+                    <div class="seccion-header">
+                        <i class="bi bi-info-circle seccion-icon estado-icon"></i>
+                        <h6 class="seccion-titulo">Estado de la Solicitud</h6>
+                    </div>
+                    <div class="seccion-content">
+                        <div class="estado-mensaje">{{ adopcionSeleccionada.mensaje }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

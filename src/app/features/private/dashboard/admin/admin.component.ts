@@ -19,6 +19,7 @@ export class AdminComponent implements OnInit {
     { title: 'Dashboard', route: '/admin/panel', icon: 'bi-speedometer2' },
     { title: 'Usuarios', route: '/admin/usuarios', icon: 'bi-people' },
     { title: 'Mascotas', route: '/admin/mascotas', icon: 'bi-heart' },
+    { title: 'Adopciones', route: '/admin/adopciones', icon: 'bi-house-heart' },
     { title: 'Productos', route: '/admin/productos', icon: 'bi-box-seam' },
     { title: 'Pedidos', route: '/admin/pedidos', icon: 'bi-bag' },
     { title: 'Citas', route: '/admin/citas', icon: 'bi-calendar-event' }

@@ -214,9 +214,26 @@
             </div>
 
             <div class="form-group">
-                <label for="imagen">URL de Imagen</label>
-                <input type="text" id="imagen" [(ngModel)]="productoForm.image" name="imagen"
-                    placeholder="https://ejemplo.com/imagen.jpg">
+                <label for="imagen">Imagen del Producto</label>
+                <div class="imagen-upload-container">
+                    <!-- Preview de imagen actual/seleccionada -->
+                    <div class="imagen-preview" *ngIf="imagenPreview">
+                        <img [src]="imagenPreview" alt="Preview" class="preview-img">
+                        <button type="button" class="btn-remove-image" (click)="removeImage()" title="Quitar imagen">
+                            <i class="bi bi-x"></i>
+                        </button>
+                    </div>
+                    
+                    <!-- Input de archivo -->
+                    <div class="file-input-container" [class.has-preview]="imagenPreview">
+                        <input type="file" id="imagen" (change)="onFileSelected($event)" 
+                               accept="image/*" class="file-input" name="imagen">
+                        <label for="imagen" class="file-input-label">
+                            <i class="bi bi-cloud-upload"></i>
+                            <span>{{ imagenPreview ? 'Cambiar imagen' : 'Seleccionar imagen' }}</span>
+                        </label>
+                    </div>
+                </div>
             </div>
 
             <div class="form-group">

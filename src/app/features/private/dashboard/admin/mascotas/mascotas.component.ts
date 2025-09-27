@@ -16,6 +16,8 @@ export class MascotasComponent implements OnInit {
   searchTerm: string = '';
   mostrarModal: boolean = false;
   mascotaEditando: Mascota | null = null;
+  imagenPreview: string | null = null;
+  selectedFile: File | null = null;
   
   mascotaForm = {
     nombre: '',
@@ -27,6 +29,7 @@ export class MascotasComponent implements OnInit {
     descripcion: '',
     imagen: '',
     disponibilidad: 'Disponible',
+    fechaIngreso: '',
     vacunado: false,
     esterilizado: false,
     buenoConNinos: false,
@@ -54,7 +57,7 @@ export class MascotasComponent implements OnInit {
           edad: 2,
           tamano: 'Grande',
           descripcion: 'Luna es una perrita muy cariñosa y juguetona',
-          imagen: 'assets/mascotas/luna.webp',
+          imagen: 'https://res.cloudinary.com/dcdw3ofx2/image/upload/v1756107458/golden_retriever4_zmspzs.jpg',
           disponibilidad: 'Disponible',
           vacunado: true,
           esterilizado: true,
@@ -133,6 +136,8 @@ export class MascotasComponent implements OnInit {
 
   abrirModalNuevo(): void {
     this.mascotaEditando = null;
+    this.imagenPreview = null;
+    this.selectedFile = null;
     this.mascotaForm = {
       nombre: '',
       especie: '',
@@ -143,6 +148,7 @@ export class MascotasComponent implements OnInit {
       descripcion: '',
       imagen: '',
       disponibilidad: 'Disponible',
+      fechaIngreso: new Date().toISOString().split('T')[0],
       vacunado: false,
       esterilizado: false,
       buenoConNinos: false,
@@ -153,6 +159,8 @@ export class MascotasComponent implements OnInit {
 
   editarMascota(mascota: Mascota): void {
     this.mascotaEditando = mascota;
+    this.imagenPreview = mascota.imagen || null;
+    this.selectedFile = null;
     this.mascotaForm = {
       nombre: mascota.nombre,
       especie: mascota.especie,
@@ -163,6 +171,7 @@ export class MascotasComponent implements OnInit {
       descripcion: mascota.descripcion || '',
       imagen: mascota.imagen || '',
       disponibilidad: mascota.disponibilidad,
+      fechaIngreso: mascota.fechaIngreso,
       vacunado: mascota.vacunado,
       esterilizado: mascota.esterilizado,
       buenoConNinos: mascota.buenoConNinos,
@@ -232,6 +241,37 @@ export class MascotasComponent implements OnInit {
   cerrarModal(): void {
     this.mostrarModal = false;
     this.mascotaEditando = null;
+    this.imagenPreview = null;
+    this.selectedFile = null;
+  }
+
+  onFileSelected(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedFile = file;
+      
+      // Crear preview de la imagen
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.imagenPreview = e.target.result;
+      };
+      reader.readAsDataURL(file);
+      
+      // Simular guardar como base64 o URL (en un caso real se subiría al servidor)
+      this.mascotaForm.imagen = this.convertFileToImagePath(file);
+    }
+  }
+
+  removeImage(): void {
+    this.imagenPreview = null;
+    this.selectedFile = null;
+    this.mascotaForm.imagen = '';
+  }
+
+  private convertFileToImagePath(file: File): string {
+    // En un caso real, aquí subirías el archivo al servidor y devolverías la URL
+    // Por ahora, simularemos con un path local
+    return `assets/mascotas/${file.name}`;
   }
 
   formatearFecha(fecha: Date | string): string {

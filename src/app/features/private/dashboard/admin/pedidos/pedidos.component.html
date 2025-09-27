@@ -10,10 +10,6 @@
                 <i class="bi bi-download"></i>
                 Exportar
             </button>
-            <button class="btn-nuevo" (click)="abrirModalNuevo()">
-                <i class="bi bi-plus"></i>
-                Nuevo Pedido
-            </button>
         </div>
     </div>
 
@@ -171,7 +167,7 @@
                     </div>
                     <div class="pedido-info">
                         <div class="pedido-id">{{ pedido.id }}</div>
-                        <div class="cliente-nombre">{{ pedido.direccionEntrega.split('@')[0] | titlecase }}</div>
+                        <div class="cliente-nombre">{{ pedido.cliente.nombre }}</div>
                     </div>
                 </div>
 
@@ -182,7 +178,7 @@
                     </div>
                     <div class="pedido-contacto">
                         <i class="bi bi-envelope"></i>
-                        {{ pedido.direccionEntrega }}
+                        {{ pedido.cliente.correo }}
                     </div>
                     <div class="pedido-total">
                         <i class="bi bi-cash"></i>
@@ -203,23 +199,18 @@
                     <div class="producto-item" *ngFor="let producto of pedido.productos">
                         <span class="producto-nombre">{{ producto.nombre }}</span>
                         <span class="producto-cantidad">x{{ producto.cantidad }}</span>
-                        <span class="producto-precio">{{ formatPrice(producto.precio) }}</span>
+                        <span class="producto-precio">{{ formatPrice(producto.precioUnitario) }}</span>
                     </div>
                 </div>
                 <div class="productos-total">
                     <strong>{{ formatPrice(pedido.total) }}</strong>
-                    <span class="precio-unitario">{{ formatPrice(calcularPrecioUnitario(pedido)) }}</span>
                 </div>
             </div>
 
             <div class="pedido-actions">
-                <button class="btn-accion btn-ver" title="Ver Detalles">
+                <button class="btn-accion btn-ver" (click)="verDetalle(pedido)" title="Ver Detalles">
                     <i class="bi bi-eye"></i>
                     Ver Detalles
-                </button>
-                <button class="btn-accion btn-editar" (click)="editarPedido(pedido)" title="Editar">
-                    <i class="bi bi-pencil"></i>
-                    Editar
                 </button>
                 <div class="estado-dropdown">
                     <select class="estado-quick-select" [value]="pedido.estado"
@@ -240,58 +231,164 @@
     </div>
 </div>
 
-<!-- Modal para crear/editar pedido -->
-<div class="modal-overlay" *ngIf="mostrarModal" (click)="cerrarModal()">
-    <div class="modal-content" (click)="$event.stopPropagation()">
+<!-- Modal para ver detalles del pedido -->
+<div class="modal-overlay" *ngIf="mostrarDetalle" (click)="cerrarDetalle()">
+    <div class="modal-content modal-detalle" (click)="$event.stopPropagation()">
         <div class="modal-header">
-            <h2>{{ pedidoEditando ? 'Editar Pedido' : 'Nuevo Pedido' }}</h2>
-            <button class="btn-cerrar" (click)="cerrarModal()">
+            <h2>Detalles del Pedido {{ pedidoDetalle?.id }}</h2>
+            <button class="btn-cerrar" (click)="cerrarDetalle()">
                 <i class="bi bi-x"></i>
             </button>
         </div>
 
-        <div class="modal-form">
-            <div class="form-group">
-                <label>ID del Pedido</label>
-                <input type="text" [value]="pedidoEditando?.id || generarNuevoId()" readonly class="input-readonly">
-            </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label>Estado</label>
-                    <select [value]="pedidoEditando?.estado || 'Pendiente'">
-                        <option *ngFor="let estado of estados" [value]="estado">{{ estado }}</option>
-                    </select>
+        <div class="detalle-content" *ngIf="pedidoDetalle">
+            <!-- Información básica en header simple -->
+            <div class="detalle-header-simple">
+                <div class="order-basic-info">
+                    <div class="order-code">
+                        <span class="code-label">Pedido:</span>
+                        <span class="code-value">{{ pedidoDetalle.id }}</span>
+                    </div>
+                    <div class="order-status">
+                        <span class="status-badge" [class]="getEstadoBadgeClass(pedidoDetalle.estado)">
+                            {{ pedidoDetalle.estado }}
+                        </span>
+                    </div>
+                    <div class="order-total">
+                        <span class="total-amount">{{ formatPrice(pedidoDetalle.total) }}</span>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label>Total</label>
-                    <input type="number" [value]="pedidoEditando?.total || 0" step="0.01" placeholder="0.00">
+                <div class="order-dates">
+                    <span class="date-info">Pedido: {{ formatearFecha(pedidoDetalle.fechaPedido) }}</span>
+                    <span class="date-info" *ngIf="pedidoDetalle.fechaEntrega">
+                        Entrega: {{ formatearFecha(pedidoDetalle.fechaEntrega) }}
+                    </span>
                 </div>
             </div>
 
-            <div class="form-group">
-                <label>Email del Cliente</label>
-                <input type="email" [value]="pedidoEditando?.direccionEntrega || ''" placeholder="cliente@email.com">
-            </div>
+            <!-- Contenido principal en secciones simples -->
+            <div class="detalle-body">
+                <!-- Información del Cliente -->
+                <div class="info-section">
+                    <h3 class="section-title">
+                        <i class="bi bi-person-circle"></i>
+                        Datos del Cliente
+                    </h3>
+                    <div class="info-card">
+                        <div class="info-row">
+                            <div class="info-col">
+                                <label>Nombre</label>
+                                <span>{{ pedidoDetalle.cliente.nombre }}</span>
+                            </div>
+                            <div class="info-col">
+                                <label>Correo</label>
+                                <span>{{ pedidoDetalle.cliente.correo }}</span>
+                            </div>
+                            <div class="info-col">
+                                <label>Teléfono</label>
+                                <span>{{ pedidoDetalle.cliente.telefono }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-            <div class="form-group">
-                <label>Método de Pago</label>
-                <select [value]="pedidoEditando?.metodoPago || 'Tarjeta de Crédito'">
-                    <option value="Tarjeta de Crédito">Tarjeta de Crédito</option>
-                    <option value="Tarjeta de Débito">Tarjeta de Débito</option>
-                    <option value="Yape">Yape</option>
-                    <option value="Efectivo">Efectivo</option>
-                </select>
-            </div>
+                <!-- Información de Entrega -->
+                <div class="info-section">
+                    <h3 class="section-title">
+                        <i class="bi bi-geo-alt"></i>
+                        Datos de Entrega
+                    </h3>
+                    <div class="info-card">
+                        <div class="info-row">
+                            <div class="info-col full-width">
+                                <label>Dirección</label>
+                                <span>{{ pedidoDetalle.direccion }}</span>
+                            </div>
+                        </div>
+                        <div class="info-row">
+                            <div class="info-col">
+                                <label>Ciudad</label>
+                                <span>{{ pedidoDetalle.ciudad }}</span>
+                            </div>
+                            <div class="info-col">
+                                <label>Código Postal</label>
+                                <span>{{ pedidoDetalle.codigoPostal }}</span>
+                            </div>
+                            <div class="info-col">
+                                <label>Teléfono</label>
+                                <span>{{ pedidoDetalle.telefonoContacto }}</span>
+                            </div>
+                        </div>
+                        <div class="info-row">
+                            <div class="info-col payment-method">
+                                <label>Método de Pago</label>
+                                <span class="payment-badge">{{ pedidoDetalle.metodoPago }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-            <div class="modal-actions">
-                <button type="button" class="btn-cancelar" (click)="cerrarModal()">
-                    Cancelar
-                </button>
-                <button type="submit" class="btn-guardar">
-                    {{ pedidoEditando ? 'Actualizar' : 'Crear' }} Pedido
-                </button>
-            </div>
+                <!-- Resumen de Precios -->
+                <div class="resumen-section">
+                    <h3 class="section-title">
+                        <i class="bi bi-calculator"></i>
+                        Resumen del Pedido
+                    </h3>
+                    <div class="resumen-card">
+                        <div class="resumen-body">
+                            <div class="resumen-item">
+                                <span class="resumen-label">Subtotal</span>
+                                <span class="resumen-value">{{ formatPrice(pedidoDetalle.subtotal) }}</span>
+                            </div>
+                            <div class="resumen-item">
+                                <span class="resumen-label">Costo de Envío</span>
+                                <span class="resumen-value">{{ formatPrice(pedidoDetalle.precioEnvio) }}</span>
+                            </div>
+                        </div>
+                        <div class="resumen-total">
+                            <div class="total-final">
+                                <span class="total-label">Total a Pagar</span>
+                                <span class="total-amount">{{ formatPrice(pedidoDetalle.total) }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detalle de Productos -->
+                <div class="info-section">
+                    <h3 class="section-title">
+                        <i class="bi bi-box-seam"></i>
+                        Detalle de Productos
+                    </h3>
+                    <div class="products-container">
+                        <div class="product-card" *ngFor="let producto of pedidoDetalle.productos">
+                            <div class="product-header">
+                                <h4 class="product-name">{{ producto.nombre }}</h4>
+                            </div>
+                            <div class="product-info">
+                                <div class="product-detail">
+                                    <span class="detail-label">Cantidad</span>
+                                    <span class="detail-value quantity-badge">{{ producto.cantidad }}</span>
+                                </div>
+                                <div class="product-detail">
+                                    <span class="detail-label">Precio Unit.</span>
+                                    <span class="detail-value">{{ formatPrice(producto.precioUnitario) }}</span>
+                                </div>
+                                <div class="product-detail subtotal">
+                                    <span class="detail-label">Subtotal</span>
+                                    <span class="detail-value price-highlight">{{ formatPrice(producto.subtotal) }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+
+        <div class="modal-actions">
+            <button type="button" class="btn-cerrar-detalle" (click)="cerrarDetalle()">
+                <i class="bi bi-x-circle"></i>
+                Cerrar
+            </button>
         </div>
     </div>
 </div>

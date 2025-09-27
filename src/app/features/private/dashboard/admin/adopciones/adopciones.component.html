@@ -1,0 +1,299 @@
+<div class="adopciones-container">
+    <!-- Header -->
+    <div class="adopciones-header">
+        <div class="header-content">
+            <h1 class="titulo">Gestión de Adopciones</h1>
+            <p class="subtitulo">Administra las solicitudes de adopción de mascotas</p>
+        </div>
+    </div>
+
+    <!-- Estadísticas -->
+    <!-- Tarjetas de Estadísticas -->
+    <div class="row g-4 mb-3">
+        <!-- Pendientes -->
+        <div class="col-lg-6 col-md-6">
+            <div class="stat-card bg-white rounded-3 p-4 shadow-sm">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <h6 class="text-muted mb-2">Pendientes</h6>
+                        <h3 class="fw-bold mb-0">{{ stats.solicitudesPendientes }}</h3>
+                    </div>
+                    <div class="stat-icon bg-warning text-white rounded-circle d-flex align-items-center justify-content-center">
+                        <i class="bi bi-clock fs-5"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Aprobadas -->
+        <div class="col-lg-6 col-md-6">
+            <div class="stat-card bg-white rounded-3 p-4 shadow-sm">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <h6 class="text-muted mb-2">Aprobadas</h6>
+                        <h3 class="fw-bold mb-0">{{ stats.solicitudesAprobadas }}</h3>
+                    </div>
+                    <div class="stat-icon bg-success text-white rounded-circle d-flex align-items-center justify-content-center">
+                        <i class="bi bi-check-circle fs-5"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Segunda fila de estadísticas -->
+    <div class="row g-4 mb-3">
+        <!-- Rechazadas -->
+        <div class="col-lg-6 col-md-6">
+            <div class="stat-card bg-white rounded-3 p-4 shadow-sm">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <h6 class="text-muted mb-2">Rechazadas</h6>
+                        <h3 class="fw-bold mb-0">{{ stats.solicitudesRechazadas }}</h3>
+                    </div>
+                    <div class="stat-icon bg-danger text-white rounded-circle d-flex align-items-center justify-content-center">
+                        <i class="bi bi-x-circle fs-5"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total -->
+        <div class="col-lg-6 col-md-6">
+            <div class="stat-card bg-white rounded-3 p-4 shadow-sm">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <h6 class="text-muted mb-2">Total Solicitudes</h6>
+                        <h3 class="fw-bold mb-0">{{ stats.totalSolicitudes }}</h3>
+                    </div>
+                    <div class="stat-icon bg-primary text-white rounded-circle d-flex align-items-center justify-content-center">
+                        <i class="bi bi-house-heart fs-5"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sección de solicitudes -->
+    <div class="inventario-section">
+        <div class="section-header">
+            <div class="section-title">
+                <h2>Solicitudes de Adopción</h2>
+                <p>Lista de todas las solicitudes de adopción con sus detalles y estados</p>
+            </div>
+        </div>
+
+        <!-- Filtro adicional -->
+        <div class="mb-3 filtros-content">
+            <div class="search-container">
+                <i class="bi bi-search search-icon"></i>
+                <input type="text" class="search-input" placeholder="Buscar por mascota o usuario..." 
+                       [(ngModel)]="searchTerm" (input)="filtrarSolicitudes()">
+            </div>
+            <select class="form-select" style="max-width: 200px;" [(ngModel)]="filtroEstado" (change)="filtrarSolicitudes()">
+                <option value="">Todos los estados</option>
+                <option value="Pendiente">Pendiente</option>
+                <option value="Aprobada">Aprobada</option>
+                <option value="Rechazada">Rechazada</option>
+            </select>
+        </div>
+
+        <!-- Tabla de Solicitudes -->
+        <div class="table-container">
+            <table class="adopciones-table">
+                <thead>
+                    <tr>
+                        <th>Mascota</th>
+                        <th>Solicitante</th>
+                        <th>Email</th>
+                        <th>Estado</th>
+                        <th>Fecha</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let solicitud of solicitudesFiltradas" class="solicitud-row">
+                        <td class="mascota-cell">
+                            <div class="mascota-info">
+                                <div class="mascota-imagen">
+                                    <img [src]="solicitud.mascota.imagen" [alt]="solicitud.mascota.nombre"
+                                        *ngIf="solicitud.mascota.imagen; else defaultImage">
+                                    <ng-template #defaultImage>
+                                        <i class="bi bi-heart"></i>
+                                    </ng-template>
+                                </div>
+                                <div class="mascota-details">
+                                    <span class="mascota-nombre">{{ solicitud.mascota.nombre }}</span>
+                                    <span class="mascota-descripcion">{{ solicitud.mascota.raza }} - {{ solicitud.mascota.edad }}</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="solicitante-cell">{{ solicitud.solicitante.nombre }}</td>
+                        <td class="email-cell">{{ solicitud.solicitante.email }}</td>
+                        <td class="estado-cell">
+                            <span class="estado-badge" [class]="getEstadoClass(solicitud.estado)">
+                                {{ solicitud.estado }}
+                            </span>
+                        </td>
+                        <td class="fecha-cell">{{ solicitud.fecha }}</td>
+                        <td class="acciones-cell">
+                            <div class="acciones-container">
+                                <button class="btn-accion btn-ver" (click)="verSolicitud(solicitud)" title="Ver detalles">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        
+        <!-- Mensaje cuando no hay resultados -->
+        <div *ngIf="solicitudesFiltradas.length === 0" class="text-center py-5">
+            <i class="bi bi-inbox display-1 text-muted"></i>
+            <p class="text-muted mt-3">No se encontraron solicitudes de adopción</p>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Detalles de Solicitud -->
+<div *ngIf="mostrarModal" class="modal-overlay" (click)="cerrarModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+            <h3 class="modal-title">Solicitud de Adopción - {{ solicitudSeleccionada?.mascota?.nombre }}</h3>
+            <p class="modal-subtitle">Detalles completos de la solicitud de adopción</p>
+            <button class="btn-close" (click)="cerrarModal()">
+                <i class="bi bi-x"></i>
+            </button>
+        </div>
+
+        <div class="modal-body" *ngIf="solicitudSeleccionada">
+            <div class="modal-tabs">
+                <div class="tab-content active">
+                    <!-- Información de la Mascota -->
+                    <div class="info-section">
+                        <h4 class="info-title">Información de la Mascota</h4>
+                        <div class="mascota-detail">
+                            <img [src]="solicitudSeleccionada.mascota.imagen" 
+                                 [alt]="solicitudSeleccionada.mascota.nombre" 
+                                 class="mascota-image">
+                            <div class="mascota-info-detail">
+                                <h5>{{ solicitudSeleccionada.mascota.nombre }}</h5>
+                                <p><strong>Raza:</strong> {{ solicitudSeleccionada.mascota.raza }}</p>
+                                <p><strong>Edad:</strong> {{ solicitudSeleccionada.mascota.edad }}</p>
+                                <p><strong>Sexo:</strong> {{ solicitudSeleccionada.mascota.sexo }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Información del Solicitante -->
+                    <div class="info-section">
+                        <h4 class="info-title">Información del Solicitante</h4>
+                        <div class="solicitante-info">
+                            <div class="info-row">
+                                <span class="info-label">Nombre:</span>
+                                <span class="info-value">{{ solicitudSeleccionada.solicitante.nombre }}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Email:</span>
+                                <span class="info-value">{{ solicitudSeleccionada.solicitante.email }}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Teléfono:</span>
+                                <span class="info-value">{{ solicitudSeleccionada.solicitante.telefono }}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Dirección:</span>
+                                <span class="info-value">{{ solicitudSeleccionada.solicitante.direccion }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Detalles de la Solicitud -->
+                    <div class="info-section">
+                        <h4 class="info-title">Detalles de la Solicitud</h4>
+                        <div class="detalles-info">
+                            <div class="info-row">
+                                <span class="info-label">Experiencia con mascotas:</span>
+                                <span class="info-value">{{ solicitudSeleccionada.detalles.experiencia }}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Tipo de vivienda:</span>
+                                <span class="info-value">{{ solicitudSeleccionada.detalles.tipoVivienda }}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Horario de trabajo:</span>
+                                <span class="info-value">{{ solicitudSeleccionada.detalles.horarioTrabajo }}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Contacto de emergencia:</span>
+                                <span class="info-value">{{ solicitudSeleccionada.detalles.contactoEmergencia }}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Veterinario de referencia:</span>
+                                <span class="info-value">{{ solicitudSeleccionada.detalles.veterinarioReferencia }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mensaje -->
+                    <div class="info-section" *ngIf="solicitudSeleccionada.detalles.mensaje">
+                        <h4 class="info-title">¿Tienes otras mascotas?</h4>
+                        <div class="mensaje-content">
+                            <p>{{ solicitudSeleccionada.detalles.mensaje }}</p>
+                        </div>
+                    </div>
+
+                    <!-- Mensaje Adicional -->
+                    <div class="info-section" *ngIf="solicitudSeleccionada.detalles.mensajeAdicional">
+                        <h4 class="info-title">¿Por qué quieres adoptar a {{ solicitudSeleccionada.mascota.nombre }}?</h4>
+                        <div class="mensaje-content">
+                            <p>{{ solicitudSeleccionada.detalles.mensajeAdicional }}</p>
+                        </div>
+                    </div>
+
+                    <!-- Aceptaciones -->
+                    <div class="info-section">
+                        <h4 class="info-title">Aceptaciones</h4>
+                        <div class="aceptaciones-list">
+                            <div class="aceptacion-item">
+                                <i class="bi" [class]="solicitudSeleccionada.aceptaciones.terminosCondiciones ? 'bi-check-circle text-success' : 'bi-x-circle text-danger'"></i>
+                                <span>Acepto los términos y condiciones de adopción y me comprometo a brindar un hogar amoroso y responsable</span>
+                            </div>
+                            <div class="aceptacion-item">
+                                <i class="bi" [class]="solicitudSeleccionada.aceptaciones.visitaDomiciliaria ? 'bi-check-circle text-success' : 'bi-x-circle text-danger'"></i>
+                                <span>Acepto recibir una visita domiciliaria como parte del proceso de adopción</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Estado de la solicitud -->
+                    <div class="info-section">
+                        <h4 class="info-title">Estado de la solicitud</h4>
+                        <div class="estado-info">
+                            <span class="estado-badge-large" [class]="getEstadoClass(solicitudSeleccionada.estado)">
+                                {{ solicitudSeleccionada.estado }}
+                            </span>
+                            <div class="fechas-info">
+                                <p><strong>Solicitud enviada:</strong> {{ solicitudSeleccionada.fechaSolicitud }}</p>
+                                <p><strong>Última actualización:</strong> {{ solicitudSeleccionada.ultimaActualizacion }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-footer" *ngIf="solicitudSeleccionada?.estado === 'Pendiente'">
+            <button class="btn-aprobar" (click)="aprobarSolicitud()">
+                <i class="bi bi-check-circle"></i>
+                Aprobar Solicitud
+            </button>
+            <button class="btn-rechazar" (click)="rechazarSolicitud()">
+                <i class="bi bi-x-circle"></i>
+                Rechazar Solicitud
+            </button>
+        </div>
+    </div>
+</div>

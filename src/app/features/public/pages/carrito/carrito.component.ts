@@ -33,14 +33,10 @@ export class CarritoComponent implements OnInit {
     return this.carrito.reduce((acc, item) => acc + item.precio * item.cantidad, 0);
   }
 
-  // Impuestos (ejemplo 10%)
-  get impuestos(): number {
-    return this.subtotal * 0.1;
-  }
 
-  // Total con impuestos
+  // Total 
   get total(): number {
-    return this.subtotal + this.impuestos;
+    return this.subtotal;
   }
 
   // Guardar cambios en cantidades

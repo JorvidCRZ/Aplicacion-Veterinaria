@@ -305,6 +305,269 @@
     }
 }
 
+/* ESTILOS PARA MODAL DE DETALLES DE CITA */
+.modal-detalle-cita {
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+}
+
+.modal-header-detalle {
+    background:var(--azul);
+    border: none;
+    padding: 24px 32px 16px;
+    border-bottom: 1px solid #f0f0f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-title-detalle {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--blanco);
+    margin: 0;
+}
+
+.btn-close-detalle {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: var(--blanco);
+    cursor: pointer;
+    padding: 8px;
+    line-height: 1;
+    transition: color 0.2s ease;
+}
+
+.btn-close-detalle:hover {
+    color: #e74c3c;
+}
+
+.modal-body-detalle {
+    padding: 0 32px 32px;
+    background: #fff;
+}
+
+.cita-header-info {
+    margin-bottom: 32px;
+    padding: 16px 0;
+    border-bottom: 1px solid #ecf0f1;
+}
+
+.estado-fecha-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.estado-badge {
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.fecha-info {
+    text-align: right;
+}
+
+.fecha-texto {
+    font-size: 0.75rem;
+    color: var(--azul);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+}
+
+.fecha-valor {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--azul);
+    margin-bottom: 2px;
+}
+
+.hora-valor {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--azul);
+}
+
+.seccion-detalle {
+    margin-bottom: 28px;
+    background: #fdfdfd;
+    border-radius: 12px;
+    border: 1px solid var(--azul);
+    overflow: hidden;
+}
+
+.seccion-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.seccion-header {
+    background:var(--azul);;
+    padding: 16px 20px;
+    border-bottom: 1px solid #ecf0f1;
+    display: flex;
+    align-items: center;
+}
+
+.seccion-icon {
+    font-size: 1.25rem;
+    margin-right: 12px;
+}
+
+.propietario-icon {
+    color: var(--blanco);
+}
+
+.mascota-icon {
+    color: var(--blanco);
+}
+
+.servicio-icon {
+    color: var(--blanco);
+}
+
+.notas-icon {
+    color: var(--blanco);
+}
+
+.seccion-titulo {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--blanco);;
+    margin: 0;
+}
+
+.seccion-content {
+    padding: 20px;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.info-label {
+    font-size: 0.75rem;
+    color: #7f8c8d;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+    font-weight: 500;
+}
+
+.info-valor {
+    font-size: 0.95rem;
+    color: #2c3e50;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+.info-valor.destacado {
+    font-weight: 700;
+    color: #2c3e50;
+    font-size: 1.05rem;
+}
+
+.veterinario-nombre {
+    color: var(--azul) !important;
+    font-weight: 600 !important;
+}
+
+.notas-seccion {
+    background: var(--blanco);
+    border: 1px solid var(--azul);
+}
+
+.notas-seccion .seccion-header {
+    background: var(--azul);
+    color: white;
+}
+
+.notas-seccion .seccion-titulo {
+    color: white;
+}
+
+.notas-texto {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #2c3e50;
+    background: var(--blanco);
+    padding: 16px;
+    border-radius: 8px;
+    border: 1px solid var(--azul);
+}
+
+/* Estados */
+.bg-success {
+    background-color: #27ae60 !important;
+    color: white;
+}
+
+.bg-warning {
+    background-color: #f39c12 !important;
+    color: white;
+}
+
+.bg-info {
+    background-color: #3498db !important;
+    color: white;
+}
+
+.bg-danger {
+    background-color: #e74c3c !important;
+    color: white;
+}
+
+/* Responsive para modal */
+@media (max-width: 768px) {
+    .modal-header-detalle {
+        padding: 20px 24px 12px;
+    }
+    
+    .modal-title-detalle {
+        font-size: 1.25rem;
+    }
+    
+    .modal-body-detalle {
+        padding: 0 24px 24px;
+    }
+    
+    .seccion-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    
+    .info-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    
+    .estado-fecha-container {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+    
+    .fecha-info {
+        text-align: left;
+    }
+}
+
 /* Tablet Portrait (768px - 991px) */
 @media (min-width: 768px) and (max-width: 991.98px) {
     .cita-card {

@@ -7,13 +7,26 @@ export interface MiPedido {
   id: string;
   fechaPedido: Date;
   estado: string;
+  subtotal: number;
+  precioEnvio: number;
   total: number;
   productos: Array<{
     nombre: string;
     cantidad: number;
-    precio: number;
+    precioUnitario: number;
+    subtotal: number;
   }>;
-  direccionEntrega: string;
+  // Datos del cliente
+  cliente: {
+    nombre: string;
+    correo: string;
+    telefono: string;
+  };
+  // Datos de entrega
+  direccion: string;
+  ciudad: string;
+  codigoPostal: string;
+  telefonoContacto: string;
   metodoPago: string;
   fechaEntrega?: Date;
 }
@@ -32,6 +45,8 @@ export class PedidosComponent implements OnInit {
   filtroEstado: string = '';
   mostrarModal: boolean = false;
   pedidoEditando: MiPedido | null = null;
+  pedidoDetalle: MiPedido | null = null;
+  mostrarDetalle: boolean = false;
   
   // Estadísticas
   stats = {
@@ -79,49 +94,93 @@ export class PedidosComponent implements OnInit {
           id: 'ORD-001',
           fechaPedido: new Date('2024-01-05'),
           estado: 'Pendiente',
+          subtotal: 84.99,
+          precioEnvio: 5.00,
           total: 89.99,
           productos: [
-            { nombre: 'Alimento Premium Perro X2', cantidad: 2, precio: 34.99 },
-            { nombre: 'Juguete Interactivo XL', cantidad: 1, precio: 19.99 }
+            { nombre: 'Alimento Premium Perro X2', cantidad: 2, precioUnitario: 34.99, subtotal: 69.98 },
+            { nombre: 'Juguete Interactivo XL', cantidad: 1, precioUnitario: 15.01, subtotal: 15.01 }
           ],
-          direccionEntrega: 'maria@email.com',
-          metodoPago: 'Tarjeta de Crédito'
+          cliente: {
+            nombre: 'María González',
+            correo: 'maria.gonzalez@email.com',
+            telefono: '+51 987 654 321'
+          },
+          direccion: 'Av. Los Olivos 123, Dpto 401',
+          ciudad: 'Lima',
+          codigoPostal: '15036',
+          telefonoContacto: '+51 987 654 321',
+          metodoPago: 'Tarjeta de Crédito',
+          fechaEntrega: new Date('2024-01-07')
         },
         {
           id: 'ORD-002',
           fechaPedido: new Date('2024-01-04'),
           estado: 'Enviado',
-          total: 156.5,
+          subtotal: 148.00,
+          precioEnvio: 8.50,
+          total: 156.50,
           productos: [
-            { nombre: 'Collar Antipulgas', cantidad: 1, precio: 15.99 },
-            { nombre: 'Vitaminas para Gatos', cantidad: 2, precio: 35.75 }
+            { nombre: 'Collar Antipulgas', cantidad: 3, precioUnitario: 15.99, subtotal: 47.97 },
+            { nombre: 'Vitaminas para Gatos', cantidad: 2, precioUnitario: 50.01, subtotal: 100.02 }
           ],
-          direccionEntrega: 'carlos@email.com',
-          metodoPago: 'Yape'
+          cliente: {
+            nombre: 'Carlos Mendoza',
+            correo: 'carlos.mendoza@email.com',
+            telefono: '+51 912 345 678'
+          },
+          direccion: 'Jr. Las Flores 456',
+          ciudad: 'Callao',
+          codigoPostal: '07001',
+          telefonoContacto: '+51 912 345 678',
+          metodoPago: 'Yape',
+          fechaEntrega: new Date('2024-01-06')
         },
         {
           id: 'ORD-003',
           fechaPedido: new Date('2024-01-03'),
           estado: 'Entregado',
+          subtotal: 224.80,
+          precioEnvio: 10.00,
           total: 234.80,
           productos: [
-            { nombre: 'Cama Premium para Perros', cantidad: 1, precio: 89.99 },
-            { nombre: 'Transportadora Mediana', cantidad: 1, precio: 144.81 }
+            { nombre: 'Cama Premium para Perros', cantidad: 1, precioUnitario: 89.99, subtotal: 89.99 },
+            { nombre: 'Transportadora Mediana', cantidad: 1, precioUnitario: 134.81, subtotal: 134.81 }
           ],
-          direccionEntrega: 'ana@email.com',
-          metodoPago: 'Transferencia'
+          cliente: {
+            nombre: 'Ana Rodríguez',
+            correo: 'ana.rodriguez@email.com',
+            telefono: '+51 965 432 109'
+          },
+          direccion: 'Calle San Martín 789',
+          ciudad: 'Arequipa',
+          codigoPostal: '04001',
+          telefonoContacto: '+51 965 432 109',
+          metodoPago: 'Transferencia Bancaria',
+          fechaEntrega: new Date('2024-01-05')
         },
         {
           id: 'ORD-004',
           fechaPedido: new Date('2024-01-02'),
           estado: 'Procesando',
+          subtotal: 62.25,
+          precioEnvio: 5.00,
           total: 67.25,
           productos: [
-            { nombre: 'Snacks Naturales', cantidad: 3, precio: 12.50 },
-            { nombre: 'Galletas para Perros', cantidad: 2, precio: 15.75 }
+            { nombre: 'Snacks Naturales', cantidad: 3, precioUnitario: 12.50, subtotal: 37.50 },
+            { nombre: 'Galletas para Perros', cantidad: 2, precioUnitario: 12.37, subtotal: 24.74 }
           ],
-          direccionEntrega: 'luis@email.com',
-          metodoPago: 'Tarjeta de Débito'
+          cliente: {
+            nombre: 'Luis Vargas',
+            correo: 'luis.vargas@email.com',
+            telefono: '+51 998 765 432'
+          },
+          direccion: 'Av. Universitaria 1020',
+          ciudad: 'San Martín de Porres',
+          codigoPostal: '15109',
+          telefonoContacto: '+51 998 765 432',
+          metodoPago: 'Tarjeta de Débito',
+          fechaEntrega: new Date('2024-01-04')
         }
       ];
       
@@ -146,7 +205,8 @@ export class PedidosComponent implements OnInit {
     if (this.searchTerm) {
       pedidosFiltrados = pedidosFiltrados.filter(pedido =>
         pedido.id.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        pedido.direccionEntrega.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        pedido.cliente.nombre.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        pedido.cliente.correo.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
         pedido.productos.some((p: any) => p.nombre.toLowerCase().includes(this.searchTerm.toLowerCase()))
       );
     }
@@ -167,14 +227,14 @@ export class PedidosComponent implements OnInit {
     this.pedidosFiltrados = [...this.pedidos];
   }
 
-  abrirModalNuevo(): void {
-    this.pedidoEditando = null;
-    this.mostrarModal = true;
+  verDetalle(pedido: MiPedido): void {
+    this.pedidoDetalle = pedido;
+    this.mostrarDetalle = true;
   }
 
-  editarPedido(pedido: MiPedido): void {
-    this.pedidoEditando = { ...pedido };
-    this.mostrarModal = true;
+  cerrarDetalle(): void {
+    this.mostrarDetalle = false;
+    this.pedidoDetalle = null;
   }
 
   cambiarEstado(pedido: MiPedido, nuevoEstado: string): void {
@@ -227,10 +287,6 @@ export class PedidosComponent implements OnInit {
     return `S/${price.toFixed(2)}`;
   }
 
-  calcularPrecioUnitario(pedido: MiPedido): number {
-    const totalCantidad = pedido.productos.reduce((sum: number, p: any) => sum + p.cantidad, 0);
-    return totalCantidad > 0 ? pedido.total / totalCantidad : 0;
-  }
 
   generarNuevoId(): string {
     return 'ORD-' + Date.now().toString().slice(-6);

@@ -89,6 +89,139 @@
     background-color: var(--gris-oscuro) !important;
 }
 
+/* ESTILOS PARA REPORTES */
+.reportes-section {
+    margin-top: 3rem;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.section-title {
+    color: var(--negro);
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.section-subtitle {
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.filtros-card {
+    border: 1px solid #e9ecef;
+    border-left: 4px solid var(--azul);
+}
+
+.resultado-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: none !important;
+    animation: slideInUp 0.6s ease-out forwards;
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+.resultado-card:nth-child(1) { animation-delay: 0.1s; }
+.resultado-card:nth-child(2) { animation-delay: 0.2s; }
+.resultado-card:nth-child(3) { animation-delay: 0.3s; }
+.resultado-card:nth-child(4) { animation-delay: 0.4s; }
+.resultado-card:nth-child(5) { animation-delay: 0.5s; }
+.resultado-card:nth-child(6) { animation-delay: 0.6s; }
+
+@keyframes slideInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.resultado-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2) !important;
+}
+
+.resultado-card h2 {
+    font-size: 2.5rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.resultado-card h6 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.resultado-icon {
+    opacity: 0.6;
+    transition: opacity 0.3s ease;
+}
+
+.resultado-card:hover .resultado-icon {
+    opacity: 0.8;
+}
+
+/* Gradientes para las tarjetas */
+.bg-gradient-primary {
+    background: var(--azul) !important;
+}
+
+.bg-gradient-info {
+    background: var(--azul) !important;
+}
+
+.bg-gradient-success {
+    background: var(--azul) !important;
+}
+
+.bg-gradient-warning {
+    background: var(--azul) !important;
+}
+
+.bg-gradient-danger {
+    background: var(--azul) !important;
+}
+
+.bg-gradient-secondary {
+    background: var(--azul) !important;
+}
+
+.acciones-reporte .btn {
+    transition: all 0.3s ease;
+    font-weight: 600;
+}
+
+.acciones-reporte .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.periodo-info {
+    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%) !important;
+    border: none !important;
+    border-left: 4px solid #2196f3 !important;
+    font-weight: 500;
+}
+
+.resumen-total .alert {
+    background: linear-gradient(135deg, #37474f 0%, #263238 100%) !important;
+    border: none !important;
+    color: white !important;
+    font-size: 1.2rem;
+    border-radius: 15px !important;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.spinner-border {
+    width: 3rem;
+    height: 3rem;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .panel-title {
@@ -102,5 +235,23 @@
     .stat-icon {
         width: 40px;
         height: 40px;
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+    }
+
+    .resultado-card h2 {
+        font-size: 2rem;
+    }
+
+    .acciones-reporte {
+        text-align: center;
+        margin-top: 1rem;
+    }
+
+    .acciones-reporte .btn {
+        width: 100%;
+        margin-bottom: 0.5rem;
     }
 }

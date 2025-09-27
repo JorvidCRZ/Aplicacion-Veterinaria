@@ -7,7 +7,7 @@
                         <h1 class="h2 fw-bold">Mis Mascotas</h1>
                         <p class="text-muted">Gestiona la información de tus mascotas</p>
                     </div>
-                    <button class="btn btn-primary">
+                    <button class="btn btn-primary" (click)="abrirModal()">
                         <i class="bi bi-plus-circle me-2"></i>
                         Agregar Mascota
                     </button>
@@ -33,7 +33,7 @@
                     <h3 class="fw-bold mb-3">No tienes mascotas registradas</h3>
                     <p class="text-muted mb-4">Agrega información de tus mascotas para un mejor seguimiento de su salud
                     </p>
-                    <button class="btn btn-primary">
+                    <button class="btn btn-primary" (click)="abrirModal()">
                         <i class="bi bi-plus-circle me-2"></i>
                         Agregar Mi Primera Mascota
                     </button>
@@ -41,4 +41,141 @@
             </div>
         </div>
     </ng-template>
+</div>
+
+<!-- Modal para agregar nueva mascota -->
+<div class="modal-overlay" *ngIf="mostrarModal" (click)="cerrarModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+            <h2>
+                <i class="bi bi-heart me-2"></i>
+                {{ modoEdicion ? 'Editar Mascota' : 'Agregar Nueva Mascota' }}
+            </h2>
+            <button class="btn-cerrar" (click)="cerrarModal()">
+                <i class="bi bi-x"></i>
+            </button>
+        </div>
+
+        <form class="modal-form" (ngSubmit)="guardarMascota()" #mascotaForm="ngForm">
+            <!-- Foto de la mascota -->
+            <div class="form-group foto-upload">
+                <label class="form-label">
+                    <i class="bi bi-camera me-2"></i>
+                    Foto de la Mascota
+                    <span class="text-muted">(Opcional)</span>
+                </label>
+                
+                <div class="upload-container">
+                    <div class="image-preview" *ngIf="imagenPreview; else placeholderImage">
+                        <img [src]="imagenPreview" alt="Preview" class="preview-img">
+                        <div class="image-overlay">
+                            <button type="button" class="btn-change-photo" (click)="fileInput.click()" title="Cambiar foto">
+                                <i class="bi bi-camera"></i>
+                            </button>
+                            <button type="button" class="btn-delete-photo" (click)="eliminarImagen()" title="Eliminar foto">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                        <div class="image-info" *ngIf="archivoSeleccionado">
+                            <small class="file-name">{{ archivoSeleccionado.name }}</small>
+                            <small class="file-size">{{ getFileSize(archivoSeleccionado.size) }}</small>
+                        </div>
+                    </div>
+                    
+                    <ng-template #placeholderImage>
+                        <div class="upload-placeholder" (click)="fileInput.click()">
+                            <div class="upload-icon">
+                                <i class="bi bi-cloud-upload display-4"></i>
+                            </div>
+                            <div class="upload-text">
+                                <p class="main-text">Subir foto de la mascota</p>
+                                <p class="sub-text">JPG, PNG o WEBP (máx. 5MB)</p>
+                            </div>
+                        </div>
+                    </ng-template>
+                    
+                    <input #fileInput type="file" class="file-input" 
+                           accept="image/jpeg,image/jpg,image/png,image/webp" 
+                           (change)="onFileSelected($event)">
+                </div>
+                
+                <!-- Mensajes de estado -->
+                <div class="upload-messages">
+                    <div class="upload-success" *ngIf="uploadSuccess && !uploadError">
+                        <i class="bi bi-check-circle me-2"></i>
+                        Imagen cargada correctamente
+                    </div>
+                    <div class="upload-error" *ngIf="uploadError">
+                        <i class="bi bi-exclamation-circle me-2"></i>
+                        {{ uploadError }}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Primera fila: Nombre y Especie -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="nombre" class="form-label">Nombre *</label>
+                    <input type="text" id="nombre" class="form-control" 
+                           [(ngModel)]="nuevaMascota.nombre" name="nombre" 
+                           placeholder="Ej: Luna, Max, Mimi..." required>
+                </div>
+                <div class="form-group">
+                    <label for="especie" class="form-label">Especie *</label>
+                    <select id="especie" class="form-control" 
+                            [(ngModel)]="nuevaMascota.especie" name="especie" required>
+                        <option value="">Seleccionar especie</option>
+                        <option *ngFor="let especie of especies" [value]="especie">{{ especie }}</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Segunda fila: Raza y Género -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="raza" class="form-label">Raza *</label>
+                    <input type="text" id="raza" class="form-control" 
+                           [(ngModel)]="nuevaMascota.raza" name="raza" 
+                           placeholder="Ej: Golden Retriever, Persa..." required>
+                </div>
+                <div class="form-group">
+                    <label for="genero" class="form-label">Género *</label>
+                    <select id="genero" class="form-control" 
+                            [(ngModel)]="nuevaMascota.genero" name="genero" required>
+                        <option value="">Seleccionar género</option>
+                        <option *ngFor="let genero of generos" [value]="genero">{{ genero }}</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Tercera fila: Edad y Tamaño -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="edad" class="form-label">Edad (años) *</label>
+                    <input type="number" id="edad" class="form-control" 
+                           [(ngModel)]="nuevaMascota.edad" name="edad" 
+                           min="0" max="30" placeholder="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="tamano" class="form-label">Tamaño *</label>
+                    <select id="tamano" class="form-control" 
+                            [(ngModel)]="nuevaMascota.tamano" name="tamano" required>
+                        <option value="">Seleccionar tamaño</option>
+                        <option *ngFor="let tamano of tamanos" [value]="tamano">{{ tamano }}</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button type="button" class="btn btn-cancelar" (click)="cerrarModal()">
+                    <i class="bi bi-x-circle me-2"></i>
+                    Cancelar
+                </button>
+                <button type="submit" class="btn btn-guardar" [disabled]="!mascotaForm.form.valid">
+                    <i class="bi bi-check-circle me-2"></i>
+                    {{ modoEdicion ? 'Actualizar Mascota' : 'Guardar Mascota' }}
+                </button>
+            </div>
+        </form>
+    </div>
 </div>

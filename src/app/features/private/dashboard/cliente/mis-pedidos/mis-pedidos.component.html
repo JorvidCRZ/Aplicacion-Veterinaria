@@ -28,3 +28,172 @@
         </div>
     </ng-template>
 </div>
+
+<!-- Modal para ver detalles del pedido -->
+<div class="modal-overlay" *ngIf="mostrarDetalle" (click)="cerrarDetalle()">
+    <div class="modal-content modal-detalle" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+            <h2>Detalles del Pedido {{ pedidoDetalle?.id }}</h2>
+            <button class="btn-cerrar" (click)="cerrarDetalle()">
+                <i class="bi bi-x"></i>
+            </button>
+        </div>
+
+        <div class="detalle-content" *ngIf="pedidoDetalle">
+            <!-- Información básica en header simple -->
+            <div class="detalle-header-simple">
+                <div class="order-basic-info">
+                    <div class="order-code">
+                        <span class="code-label">Pedido:</span>
+                        <span class="code-value">{{ pedidoDetalle.id }}</span>
+                    </div>
+                    <div class="order-status">
+                        <span class="status-badge" [class]="getEstadoBadgeClass(pedidoDetalle.estado)">
+                            {{ pedidoDetalle.estado }}
+                        </span>
+                    </div>
+                    <div class="order-total">
+                        <span class="total-amount">{{ formatPrice(pedidoDetalle.total) }}</span>
+                    </div>
+                </div>
+                <div class="order-dates">
+                    <span class="date-info">Pedido: {{ formatearFecha(pedidoDetalle.fechaPedido) }}</span>
+                    <span class="date-info" *ngIf="pedidoDetalle.fechaEntrega">
+                        Entrega: {{ formatearFecha(pedidoDetalle.fechaEntrega) }}
+                    </span>
+                </div>
+            </div>
+
+            <!-- Contenido principal en secciones simples -->
+            <div class="detalle-body">
+                <!-- Información del Cliente -->
+                <div class="info-section">
+                    <h3 class="section-title">
+                        <i class="bi bi-person-circle"></i>
+                        Datos del Cliente
+                    </h3>
+                    <div class="info-card">
+                        <div class="info-row">
+                            <div class="info-col">
+                                <label>Nombre</label>
+                                <span>{{ pedidoDetalle.cliente?.nombre || 'Usuario Actual' }}</span>
+                            </div>
+                            <div class="info-col">
+                                <label>Correo</label>
+                                <span>{{ pedidoDetalle.cliente?.correo || 'No especificado' }}</span>
+                            </div>
+                            <div class="info-col">
+                                <label>Teléfono</label>
+                                <span>{{ pedidoDetalle.cliente?.telefono || 'No especificado' }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Información de Entrega -->
+                <div class="info-section">
+                    <h3 class="section-title">
+                        <i class="bi bi-geo-alt"></i>
+                        Datos de Entrega
+                    </h3>
+                    <div class="info-card">
+                        <div class="info-row">
+                            <div class="info-col full-width">
+                                <label>Dirección</label>
+                                <span>{{ pedidoDetalle.direccionEntrega }}</span>
+                            </div>
+                        </div>
+                        <div class="info-row">
+                            <div class="info-col">
+                                <label>Ciudad</label>
+                                <span>{{ pedidoDetalle.ciudad || 'Lima' }}</span>
+                            </div>
+                            <div class="info-col">
+                                <label>Código Postal</label>
+                                <span>{{ pedidoDetalle.codigoPostal || '15001' }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Información de Pago -->
+                <div class="info-section">
+                    <h3 class="section-title">
+                        <i class="bi bi-credit-card"></i>
+                        Método de Pago
+                    </h3>
+                    <div class="info-card">
+                        <div class="info-row">
+                            <div class="info-col payment-method">
+                                <label>Método de Pago</label>
+                                <span class="payment-badge">{{ pedidoDetalle.metodoPago }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Resumen de Precios -->
+                <div class="resumen-section">
+                    <h3 class="section-title">
+                        <i class="bi bi-calculator"></i>
+                        Resumen del Pedido
+                    </h3>
+                    <div class="resumen-card">
+                        <div class="resumen-body">
+                            <div class="resumen-item">
+                                <span class="resumen-label">Subtotal</span>
+                                <span class="resumen-value">{{ formatPrice(pedidoDetalle.total * 0.9) }}</span>
+                            </div>
+                            <div class="resumen-item">
+                                <span class="resumen-label">Costo de Envío</span>
+                                <span class="resumen-value">{{ formatPrice(pedidoDetalle.total * 0.1) }}</span>
+                            </div>
+                        </div>
+                        <div class="resumen-total">
+                            <div class="total-final">
+                                <span class="total-label">Total a Pagar</span>
+                                <span class="total-amount">{{ formatPrice(pedidoDetalle.total) }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detalle de Productos -->
+                <div class="info-section">
+                    <h3 class="section-title">
+                        <i class="bi bi-box-seam"></i>
+                        Detalle de Productos
+                    </h3>
+                    <div class="products-container">
+                        <div class="product-card" *ngFor="let producto of pedidoDetalle.items">
+                            <div class="product-header">
+                                <h4 class="product-name">{{ producto.nombreProducto }}</h4>
+                            </div>
+                            <div class="product-info">
+                                <div class="product-detail">
+                                    <span class="detail-label">Cantidad</span>
+                                    <span class="detail-value quantity-badge">{{ producto.cantidad }}</span>
+                                </div>
+                                <div class="product-detail">
+                                    <span class="detail-label">Precio Unit.</span>
+                                    <span class="detail-value">{{ formatPrice(producto.precio) }}</span>
+                                </div>
+                                <div class="product-detail subtotal">
+                                    <span class="detail-label">Subtotal</span>
+                                    <span class="detail-value price-highlight">{{ formatPrice(producto.subtotal) }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-actions">
+            <button type="button" class="btn-cerrar-detalle" (click)="cerrarDetalle()">
+                <i class="bi bi-x-circle"></i>
+                Cerrar
+            </button>
+        </div>
+    </div>
+</div>
