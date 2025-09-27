@@ -3,6 +3,9 @@ import { Cita } from '../../../../../core/models/cita';
 import { MiCita, MiCitaCardComponent } from '../../../../../shared/components/index-dashboard-user';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { AuthService } from '../../../../../core/services/auth.service';
+
+declare var bootstrap: any;
 
 interface CitaUsuario extends Cita {
   id: string;
@@ -19,12 +22,14 @@ interface CitaUsuario extends Cita {
   styleUrl: './mis-citas.component.css'
 })
 export class MisCitasComponent implements OnInit {
+  usuarioActual: any;
+  
   citas: CitaUsuario[] = [
     {
       id: '1',
-      nombreCompleto: 'Juan Pérez',
-      telefono: '999-888-777',
-      email: 'juan@email.com',
+      nombreCompleto: '', // Se llenará con datos del usuario actual
+      telefono: '', // Se llenará con datos del usuario actual
+      email: '', // Se llenará con datos del usuario actual
       nombreMascota: 'Luna',
       especie: 'Perro',
       raza: 'Golden Retriever',
@@ -39,9 +44,9 @@ export class MisCitasComponent implements OnInit {
     },
     {
       id: '2',
-      nombreCompleto: 'Juan Pérez',
-      telefono: '999-888-777',
-      email: 'juan@email.com',
+      nombreCompleto: '', // Se llenará con datos del usuario actual
+      telefono: '', // Se llenará con datos del usuario actual
+      email: '', // Se llenará con datos del usuario actual
       nombreMascota: 'Mimi',
       especie: 'Gato',
       raza: 'Persa',
@@ -56,9 +61,9 @@ export class MisCitasComponent implements OnInit {
     },
     {
       id: '3',
-      nombreCompleto: 'Juan Pérez',
-      telefono: '999-888-777',
-      email: 'juan@email.com',
+      nombreCompleto: '', // Se llenará con datos del usuario actual
+      telefono: '', // Se llenará con datos del usuario actual
+      email: '', // Se llenará con datos del usuario actual
       nombreMascota: 'Luna',
       especie: 'Perro',
       raza: 'Golden Retriever',
@@ -73,9 +78,9 @@ export class MisCitasComponent implements OnInit {
     },
     {
       id: '4',
-      nombreCompleto: 'Juan Pérez',
-      telefono: '999-888-777',
-      email: 'juan@email.com',
+      nombreCompleto: '', // Se llenará con datos del usuario actual
+      telefono: '', // Se llenará con datos del usuario actual
+      email: '', // Se llenará con datos del usuario actual
       nombreMascota: 'Max',
       especie: 'Perro',
       raza: 'Labrador',
@@ -92,9 +97,29 @@ export class MisCitasComponent implements OnInit {
 
   citasProximas: CitaUsuario[] = [];
   historialCitas: CitaUsuario[] = [];
+  citaSeleccionada: CitaUsuario | null = null;
+
+  constructor(private authService: AuthService) {}
 
   ngOnInit(): void {
+    // Obtener datos del usuario actual
+    this.usuarioActual = this.authService.getCurrentUser();
+    
+    // Actualizar las citas con los datos del usuario actual
+    this.actualizarDatosUsuario();
+    
     this.organizarCitas();
+  }
+
+  private actualizarDatosUsuario(): void {
+    // Los datos del propietario siempre deben ser del usuario actual logueado
+    if (this.usuarioActual) {
+      this.citas.forEach(cita => {
+        cita.nombreCompleto = this.usuarioActual.nombre || 'Usuario Actual';
+        cita.email = this.usuarioActual.email || '';
+        cita.telefono = this.usuarioActual.telefono || '';
+      });
+    }
   }
 
   organizarCitas(): void {
@@ -147,8 +172,29 @@ export class MisCitasComponent implements OnInit {
   }
 
   verDetallesCita(cita: MiCita): void {
-    console.log('Ver detalles de cita:', cita);
-    // Implementar lógica para mostrar detalles
+    // Encontrar la cita completa usando el ID
+    this.citaSeleccionada = this.citas.find(c => c.id === cita.id) || null;
+    
+    if (this.citaSeleccionada) {
+      // Abrir el modal usando Bootstrap
+      setTimeout(() => {
+        const modalElement = document.getElementById('modalDetallesCita');
+        if (modalElement && typeof bootstrap !== 'undefined') {
+          const modal = new bootstrap.Modal(modalElement);
+          modal.show();
+        }
+      }, 100);
+    }
+  }
+
+  formatearFecha(fecha: string): string {
+    const fechaObj = new Date(fecha);
+    return fechaObj.toLocaleDateString('es-ES', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
   }
 
   transformCita(cita: CitaUsuario): MiCita {

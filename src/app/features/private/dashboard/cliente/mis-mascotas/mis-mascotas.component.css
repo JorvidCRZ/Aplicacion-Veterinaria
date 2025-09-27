@@ -255,3 +255,392 @@
         padding: 0.75rem 1rem;
     }
 }
+
+/* Modal para agregar mascota */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 1rem;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 12px;
+    max-width: 600px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--gris);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--gris);
+    background: var(--azul);
+    color: white;
+    border-radius: 12px 12px 0 0;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 1.4rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+}
+
+.btn-cerrar {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    cursor: pointer;
+    padding: 8px 10px;
+    border-radius: 6px;
+    font-size: 1.2rem;
+    transition: all 0.2s ease;
+}
+
+.btn-cerrar:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
+}
+
+.modal-form {
+    padding: 2rem;
+}
+
+/* Upload de foto mejorado */
+.foto-upload {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.foto-upload .form-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.foto-upload .form-label .text-muted {
+    font-weight: 400;
+    font-size: 0.8rem;
+}
+
+.upload-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.image-preview {
+    position: relative;
+    display: inline-block;
+}
+
+.preview-img {
+    width: 140px;
+    height: 140px;
+    border-radius: 12px;
+    object-fit: cover;
+    border: 3px solid var(--azul-claro);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+}
+
+.image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.image-preview:hover .image-overlay {
+    opacity: 1;
+}
+
+.btn-change-photo,
+.btn-delete-photo {
+    background: var(--azul);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.btn-change-photo:hover {
+    background: var(--azul-oscuro);
+    transform: translateY(-2px);
+}
+
+.btn-delete-photo {
+    background: #dc3545;
+}
+
+.btn-delete-photo:hover {
+    background: #c82333;
+    transform: translateY(-2px);
+}
+
+.image-info {
+    position: absolute;
+    bottom: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 1px solid var(--gris);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    white-space: nowrap;
+}
+
+.image-info .file-name {
+    display: block;
+    font-weight: 600;
+    color: var(--azul-oscuro);
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.image-info .file-size {
+    display: block;
+    color: var(--gris-oscuro);
+    font-size: 0.75rem;
+}
+
+.upload-placeholder {
+    width: 200px;
+    height: 140px;
+    border: 3px dashed var(--gris-oscuro);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: var(--gris-claro);
+    padding: 1rem;
+}
+
+.upload-placeholder:hover {
+    border-color: var(--azul);
+    background: rgba(26, 78, 141, 0.05);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(26, 78, 141, 0.1);
+}
+
+.upload-icon {
+    color: var(--azul-claro);
+    margin-bottom: 0.5rem;
+}
+
+.upload-text .main-text {
+    font-weight: 600;
+    color: var(--azul-oscuro);
+    margin-bottom: 0.25rem;
+    font-size: 0.9rem;
+}
+
+.upload-text .sub-text {
+    color: var(--gris-oscuro);
+    font-size: 0.75rem;
+    margin: 0;
+}
+
+/* Mensajes de estado */
+.upload-messages {
+    margin-top: 0.75rem;
+    min-height: 20px;
+}
+
+.upload-success {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--verde);
+    font-size: 0.85rem;
+    font-weight: 600;
+    background: rgba(76, 175, 80, 0.1);
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    border: 1px solid rgba(76, 175, 80, 0.3);
+}
+
+.upload-error {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #dc3545;
+    font-size: 0.85rem;
+    font-weight: 600;
+    background: rgba(220, 53, 69, 0.1);
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    border: 1px solid rgba(220, 53, 69, 0.3);
+}
+
+.file-input {
+    display: none;
+}
+
+/* Formulario */
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-label {
+    font-weight: 600;
+    color: var(--azul-oscuro);
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid var(--gris);
+    border-radius: 8px;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+    background: white;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--azul);
+    box-shadow: 0 0 0 3px rgba(26, 78, 141, 0.1);
+}
+
+
+.form-control::placeholder {
+    color: var(--gris-oscuro);
+    opacity: 0.7;
+}
+
+/* Acciones del modal */
+.modal-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--gris);
+    margin-top: 1rem;
+}
+
+.btn-cancelar {
+    padding: 0.75rem 1.5rem;
+    border: 2px solid var(--gris);
+    background: white;
+    color: var(--gris-oscuro);
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-cancelar:hover {
+    color: white;
+    background: var(--gris-oscuro);
+    border-color: var(--gris-oscuro);
+}
+
+.btn-guardar {
+    padding: 0.75rem 1.5rem;
+    background: var(--azul);
+    color: white;
+    border: 2px solid var(--azul);
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-guardar:hover:not(:disabled) {
+    background: var(--azul-oscuro);
+    border-color: var(--azul-oscuro);
+    transform: translateY(-1px);
+}
+
+.btn-guardar:disabled {
+    background: var(--gris);
+    border-color: var(--gris);
+    color: var(--gris-oscuro);
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .modal-content {
+        margin: 0.5rem;
+        max-height: 95vh;
+    }
+    
+    .modal-form {
+        padding: 1.5rem;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .modal-actions {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    .btn-cancelar,
+    .btn-guardar {
+        justify-content: center;
+    }
+}

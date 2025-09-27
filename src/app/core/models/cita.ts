@@ -12,6 +12,7 @@ export interface Cita {
   
   // Detalles de la cita
   servicioRequerido: string;
+  sede: string;
   fechaPreferida: string;
   horaPreferida: string;
   notasAdicionales: string;

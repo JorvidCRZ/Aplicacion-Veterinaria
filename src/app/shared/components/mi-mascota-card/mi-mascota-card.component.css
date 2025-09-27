@@ -31,17 +31,6 @@
     transform: scale(1.05);
 }
 
-.mascota-status {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-}
-
-.mascota-status .badge {
-    font-size: 0.75rem;
-    padding: 0.4rem 0.8rem;
-    border-radius: 20px;
-}
 
 .mascota-info {
     padding: 1.25rem;

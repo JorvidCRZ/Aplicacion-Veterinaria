@@ -49,8 +49,10 @@
                         <td class="mascota-cell">
                             <div class="mascota-info">
                                 <div class="mascota-avatar">
-                                    <i class="bi"
-                                        [class]="mascota.especie === 'Perro' ? 'bi-heart' : 'bi-heart-fill'"></i>
+                                    <img *ngIf="mascota.imagen; else iconTemplate" [src]="mascota.imagen" [alt]="mascota.nombre" class="mascota-img">
+                                    <ng-template #iconTemplate>
+                                        <i class="bi" [class]="mascota.especie === 'Perro' ? 'bi-heart' : 'bi-heart-fill'"></i>
+                                    </ng-template>
                                 </div>
                                 <span class="mascota-nombre">{{ mascota.nombre }}</span>
                             </div>
@@ -141,19 +143,43 @@
                         </select>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label>Disponibilidad</label>
-                    <select [(ngModel)]="mascotaForm.disponibilidad" name="disponibilidad" required>
-                        <option value="">Seleccionar disponibilidad</option>
-                        <option value="Disponible">Disponible</option>
-                        <option value="Adoptado">Adoptado</option>
-                        <option value="En proceso">En proceso</option>
-                        <option value="No disponible">No disponible</option>
-                    </select>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Disponibilidad</label>
+                        <select [(ngModel)]="mascotaForm.disponibilidad" name="disponibilidad" required>
+                            <option value="">Seleccionar disponibilidad</option>
+                            <option value="Disponible">Disponible</option>
+                            <option value="Adoptado">Adoptado</option>
+                            <option value="En proceso">En proceso</option>
+                            <option value="No disponible">No disponible</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Fecha de Ingreso</label>
+                        <input type="date" [(ngModel)]="mascotaForm.fechaIngreso" name="fechaIngreso" required>
+                    </div>
                 </div>
                 <div class="form-group">
-                    <label>Imagen URL</label>
-                    <input type="text" [(ngModel)]="mascotaForm.imagen" name="imagen" placeholder="URL de la imagen">
+                    <label for="imagen">Imagen de la Mascota</label>
+                    <div class="imagen-upload-container">
+                        <!-- Preview de imagen actual/seleccionada -->
+                        <div class="imagen-preview" *ngIf="imagenPreview">
+                            <img [src]="imagenPreview" alt="Preview" class="preview-img">
+                            <button type="button" class="btn-remove-image" (click)="removeImage()" title="Quitar imagen">
+                                <i class="bi bi-x"></i>
+                            </button>
+                        </div>
+                        
+                        <!-- Input de archivo -->
+                        <div class="file-input-container" [class.has-preview]="imagenPreview">
+                            <input type="file" id="imagen" (change)="onFileSelected($event)" 
+                                   accept="image/*" class="file-input" name="imagen">
+                            <label for="imagen" class="file-input-label">
+                                <i class="bi bi-cloud-upload"></i>
+                                <span>{{ imagenPreview ? 'Cambiar imagen' : 'Seleccionar imagen' }}</span>
+                            </label>
+                        </div>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label>Descripción</label>

@@ -17,6 +17,10 @@ export class ProductosComponent implements OnInit {
   mostrarModal: boolean = false;
   productoEditando: Product | null = null;
   
+  // Propiedades para manejo de imagen
+  imagenPreview: string | null = null;
+  selectedFile: File | null = null;
+  
   // Estadísticas
   stats = {
     totalProductos: 0,
@@ -131,6 +135,8 @@ export class ProductosComponent implements OnInit {
       stock: 0,
       inStock: true
     };
+    this.imagenPreview = null;
+    this.selectedFile = null;
     this.mostrarModal = true;
   }
 
@@ -145,6 +151,8 @@ export class ProductosComponent implements OnInit {
       stock: producto.stock,
       inStock: producto.inStock
     };
+    this.imagenPreview = producto.image || null;
+    this.selectedFile = null;
     this.mostrarModal = true;
   }
 
@@ -158,6 +166,18 @@ export class ProductosComponent implements OnInit {
   }
 
   guardarProducto(): void {
+    // Convertir archivo a imagen si hay uno seleccionado
+    if (this.selectedFile) {
+      this.convertFileToImagePath(this.selectedFile).then((imagePath) => {
+        this.productoForm.image = imagePath;
+        this.procesarGuardado();
+      });
+    } else {
+      this.procesarGuardado();
+    }
+  }
+
+  private procesarGuardado(): void {
     if (this.productoEditando) {
       // Actualizar producto existente
       const index = this.productos.findIndex(p => p.id === this.productoEditando!.id);
@@ -221,5 +241,42 @@ export class ProductosComponent implements OnInit {
 
   private guardarEnLocalStorage(): void {
     localStorage.setItem('productos', JSON.stringify(this.productos));
+  }
+
+  // Métodos para manejo de archivos de imagen
+  onFileSelected(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedFile = file;
+      
+      // Crear preview de la imagen
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.imagenPreview = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  removeImage(): void {
+    this.imagenPreview = null;
+    this.selectedFile = null;
+    this.productoForm.image = '';
+    
+    // Limpiar el input file
+    const fileInput = document.getElementById('imagen') as HTMLInputElement;
+    if (fileInput) {
+      fileInput.value = '';
+    }
+  }
+
+  private convertFileToImagePath(file: File): Promise<string> {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        resolve(e.target.result);
+      };
+      reader.readAsDataURL(file);
+    });
   }
 }

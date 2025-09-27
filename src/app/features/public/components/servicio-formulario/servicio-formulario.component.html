@@ -76,6 +76,13 @@
               </select>
             </div>
             <div class="col-md-6">
+              <label class="form-label">Sede</label>
+              <select class="form-select" [(ngModel)]="cita.sede" name="sede" required>
+                <option value="" disabled selected>Selecciona la sede</option>
+                <option *ngFor="let sede of sedes" [value]="sede">{{ sede }}</option>
+              </select>
+            </div>
+            <div class="col-md-6">
               <label class="form-label">Fecha preferida</label>
               <input type="date" class="form-control" [(ngModel)]="cita.fechaPreferida" name="fechaPreferida" required>
             </div>

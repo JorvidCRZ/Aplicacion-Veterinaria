@@ -77,7 +77,7 @@
     </div>
 
     <!-- Segunda fila de estadísticas -->
-    <div class="row g-4">
+    <div class="row g-4 mb-5">
         <!-- Productos en Stock -->
         <div class="col-lg-6 col-md-6">
             <div class="stat-card bg-white rounded-3 p-4 shadow-sm">
@@ -108,6 +108,176 @@
                         class="stat-icon bg-primary text-white rounded-circle d-flex align-items-center justify-content-center">
                         <i class="bi bi-cash fs-5"></i>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECCIÓN DE REPORTES -->
+    <div class="reportes-section">
+        <div class="section-header mb-4">
+            <h3 class="section-title">Reportes Administrativos</h3>
+            <p class="section-subtitle text-muted">Genera reportes detallados por rango de fechas de todas las secciones administrativas</p>
+        </div>
+
+        <!-- Filtros de Fecha -->
+        <div class="filtros-card bg-white rounded-3 p-4 shadow-sm mb-4">
+            <div class="row g-3 align-items-end">
+                <div class="col-md-4">
+                    <label for="fechaInicio" class="form-label fw-semibold">Fecha de Inicio</label>
+                    <input type="date" 
+                           class="form-control" 
+                           id="fechaInicio" 
+                           [(ngModel)]="fechaInicio"
+                           [max]="fechaFin">
+                </div>
+                <div class="col-md-4">
+                    <label for="fechaFin" class="form-label fw-semibold">Fecha de Fin</label>
+                    <input type="date" 
+                           class="form-control" 
+                           id="fechaFin" 
+                           [(ngModel)]="fechaFin"
+                           [min]="fechaInicio">
+                </div>
+                <div class="col-md-4">
+                    <button class="btn btn-primary btn-lg w-100" 
+                            (click)="generarReporte()"
+                            [disabled]="cargandoReporte">
+                        <span *ngIf="cargandoReporte" class="spinner-border spinner-border-sm me-2"></span>
+                        <i *ngIf="!cargandoReporte" class="bi bi-graph-up me-2"></i>
+                        {{ cargandoReporte ? 'Generando...' : 'Generar Reporte' }}
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading State -->
+        <div *ngIf="cargandoReporte" class="text-center py-5">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Cargando...</span>
+            </div>
+            <p class="mt-3 text-muted">Generando reporte, por favor espera...</p>
+        </div>
+
+        <!-- Resultados del Reporte -->
+        <div *ngIf="reporteGenerado && !cargandoReporte" class="resultados-reporte">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 class="mb-0">Resultados del Reporte</h4>
+                <div class="acciones-reporte">
+                    <button class="btn btn-danger me-2" (click)="exportarPDF()">
+                        <i class="bi bi-file-earmark-pdf me-2"></i>Exportar PDF
+                    </button>
+                    <button class="btn btn-outline-secondary" (click)="limpiarReporte()">
+                        <i class="bi bi-arrow-clockwise me-2"></i>Limpiar
+                    </button>
+                </div>
+            </div>
+
+            <div class="periodo-info alert alert-info mb-4">
+                <i class="bi bi-calendar-range me-2"></i>
+                <strong>Período:</strong> {{ formatearFecha(fechaInicio) }} - {{ formatearFecha(fechaFin) }}
+            </div>
+
+            <!-- Tarjetas de Resultados -->
+            <div class="row g-4">
+                <!-- Usuarios -->
+                <div class="col-xxl-4 col-md-6">
+                    <div class="resultado-card bg-gradient-primary text-white rounded-3 p-4 shadow">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="text-white-50 mb-2">Usuarios Registrados</h6>
+                                <h2 class="fw-bold mb-0">{{ reporteData.usuarios }}</h2>
+                            </div>
+                            <div class="resultado-icon">
+                                <i class="bi bi-people fs-1 opacity-75"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mascotas en Adopción -->
+                <div class="col-xxl-4 col-md-6">
+                    <div class="resultado-card bg-gradient-info text-white rounded-3 p-4 shadow">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="text-white-50 mb-2">Mascotas en Adopción</h6>
+                                <h2 class="fw-bold mb-0">{{ reporteData.mascotasAdopcion }}</h2>
+                            </div>
+                            <div class="resultado-icon">
+                                <i class="bi bi-heart fs-1 opacity-75"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Adopciones Realizadas -->
+                <div class="col-xxl-4 col-md-6">
+                    <div class="resultado-card bg-gradient-success text-white rounded-3 p-4 shadow">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="text-white-50 mb-2">Adopciones Realizadas</h6>
+                                <h2 class="fw-bold mb-0">{{ reporteData.adopciones }}</h2>
+                            </div>
+                            <div class="resultado-icon">
+                                <i class="bi bi-house-heart fs-1 opacity-75"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Productos -->
+                <div class="col-xxl-4 col-md-6">
+                    <div class="resultado-card bg-gradient-warning text-white rounded-3 p-4 shadow">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="text-white-50 mb-2">Productos</h6>
+                                <h2 class="fw-bold mb-0">{{ reporteData.productos }}</h2>
+                            </div>
+                            <div class="resultado-icon">
+                                <i class="bi bi-box-seam fs-1 opacity-75"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pedidos -->
+                <div class="col-xxl-4 col-md-6">
+                    <div class="resultado-card bg-gradient-danger text-white rounded-3 p-4 shadow">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="text-white-50 mb-2">Pedidos</h6>
+                                <h2 class="fw-bold mb-0">{{ reporteData.pedidos }}</h2>
+                            </div>
+                            <div class="resultado-icon">
+                                <i class="bi bi-bag fs-1 opacity-75"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Citas Médicas -->
+                <div class="col-xxl-4 col-md-6">
+                    <div class="resultado-card bg-gradient-secondary text-white rounded-3 p-4 shadow">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="text-white-50 mb-2">Citas Médicas</h6>
+                                <h2 class="fw-bold mb-0">{{ reporteData.citas }}</h2>
+                            </div>
+                            <div class="resultado-icon">
+                                <i class="bi bi-calendar-heart fs-1 opacity-75"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resumen Total -->
+            <div class="resumen-total mt-4">
+                <div class="alert alert-dark text-center">
+                    <h5 class="mb-0">
+                        <i class="bi bi-calculator me-2"></i>
+                        <strong>TOTAL GENERAL: {{ reporteData.usuarios + reporteData.mascotasAdopcion + reporteData.adopciones + reporteData.productos + reporteData.pedidos + reporteData.citas }}</strong>
+                    </h5>
                 </div>
             </div>
         </div>
